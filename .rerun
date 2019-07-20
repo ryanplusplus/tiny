@@ -1,0 +1,6 @@
+--quiet
+--ignore ./build/**/*
+--no-notify
+-c
+-w 1
+-p **/*.{c,cpp,h}
