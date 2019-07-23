@@ -52,53 +52,80 @@ TEST_GROUP(tiny_ram_key_value_store) {
     tiny_event_subscription_init(&on_change_subscription, NULL, value_changed);
     tiny_ram_key_value_store_init(&self, &configuration, &storage);
   }
+
+  void should_contain_key(tiny_key_value_store_key_t key) {
+    CHECK_TRUE(tiny_key_value_store_contains(&self.interface, key));
+  }
+
+  void should_not_contain_key(tiny_key_value_store_key_t key) {
+    CHECK_FALSE(tiny_key_value_store_contains(&self.interface, key));
+  }
+
+  void value_for_key_should_have_size(tiny_key_value_store_key_t key, uint8_t size) {
+    CHECK_EQUAL(size, tiny_key_value_store_size(&self.interface, key));
+  }
+
+  void key_should_have_value(tiny_key_value_store_key_t key, uint8_t expected) {
+    uint8_t actual;
+    tiny_key_value_store_read(&self.interface, key, &actual);
+    CHECK_EQUAL(expected, actual);
+  }
+
+  void key_should_have_value(tiny_key_value_store_key_t key, uint32_t expected) {
+    uint32_t actual;
+    tiny_key_value_store_read(&self.interface, key, &actual);
+    CHECK_EQUAL(expected, actual);
+  }
+
+  void after_key_is_written_with(tiny_key_value_store_key_t key, uint8_t value) {
+    tiny_key_value_store_write(&self.interface, key, &value);
+  }
+
+  void after_key_is_written_with(tiny_key_value_store_key_t key, uint32_t value) {
+    tiny_key_value_store_write(&self.interface, key, &value);
+  }
+
+  void given_that_an_on_change_subscription_is_active() {
+    tiny_event_subscribe(
+      tiny_key_value_store_on_change(&self.interface),
+      &on_change_subscription);
+  }
+
+  void an_on_change_publication_should_be_received(tiny_key_value_store_key_t key, uint32_t value) {
+    mock()
+      .expectOneCall("value_changed")
+      .withParameter("key", key)
+      .withParameter("value", value);
+  }
 };
 
 TEST(tiny_ram_key_value_store, should_contain_only_configured_keys) {
-  CHECK_TRUE(tiny_key_value_store_contains(&self.interface, key_foo));
-  CHECK_TRUE(tiny_key_value_store_contains(&self.interface, key_bar));
-  CHECK_FALSE(tiny_key_value_store_contains(&self.interface, 2));
-  CHECK_FALSE(tiny_key_value_store_contains(&self.interface, 0xFF));
+  should_contain_key(key_foo);
+  should_contain_key(key_bar);
+  should_not_contain_key(2);
+  should_not_contain_key(0xFF);
 }
 
 TEST(tiny_ram_key_value_store, should_give_the_size_of_contained_values) {
-  CHECK_EQUAL(sizeof(uint8_t), tiny_key_value_store_size(&self.interface, key_foo));
-  CHECK_EQUAL(sizeof(uint32_t), tiny_key_value_store_size(&self.interface, key_bar));
+  value_for_key_should_have_size(key_foo, sizeof(uint8_t));
+  value_for_key_should_have_size(key_bar, sizeof(uint32_t));
 }
 
 TEST(tiny_ram_key_value_store, should_initialize_all_values_to_zero) {
-  uint8_t foo;
-  tiny_key_value_store_read(&self.interface, key_foo, &foo);
-  CHECK_EQUAL(0, foo);
-
-  uint32_t bar;
-  tiny_key_value_store_read(&self.interface, key_bar, &bar);
-  CHECK_EQUAL(0, bar);
+  key_should_have_value(key_foo, (uint8_t)0);
+  key_should_have_value(key_bar, (uint32_t)0);
 }
 
 TEST(tiny_ram_key_value_store, should_allow_items_to_be_written_and_read) {
-  uint8_t foo_expected = 0xAB;
-  tiny_key_value_store_write(&self.interface, key_foo, &foo_expected);
-  uint8_t foo_actual;
-  tiny_key_value_store_read(&self.interface, key_foo, &foo_actual);
-  CHECK_EQUAL(foo_expected, foo_actual);
+  after_key_is_written_with(key_foo, (uint8_t)0xAB);
+  key_should_have_value(key_foo, (uint8_t)0xAB);
 
-  uint32_t bar_expected = 0x12345678;
-  tiny_key_value_store_write(&self.interface, key_bar, &bar_expected);
-  uint32_t bar_actual;
-  tiny_key_value_store_read(&self.interface, key_bar, &bar_actual);
-  CHECK_EQUAL(bar_expected, bar_actual);
+  after_key_is_written_with(key_bar, (uint8_t)0x12345678);
+  key_should_have_value(key_bar, (uint8_t)0x12345678);
 }
 
 TEST(tiny_ram_key_value_store, should_raise_on_change_event_when_a_value_changes) {
-  tiny_event_subscribe(
-    tiny_key_value_store_on_change(&self.interface),
-    &on_change_subscription);
-
-  mock()
-    .expectOneCall("value_changed")
-    .withParameter("key", key_bar)
-    .withParameter("value", 0x12345678);
-  uint32_t bar = 0x12345678;
-  tiny_key_value_store_write(&self.interface, key_bar, &bar);
+  given_that_an_on_change_subscription_is_active();
+  an_on_change_publication_should_be_received(key_bar, 0x12345678);
+  after_key_is_written_with(key_bar, (uint32_t)0x12345678);
 }
