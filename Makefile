@@ -27,7 +27,6 @@ $(BUILD_DIR)/$(TARGET): $(OBJS)
 	@echo Linking $@...
 	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(OBJS) -o $@ $(LDFLAGS)
-	@echo Build complete
 
 $(BUILD_DIR)/%.s.o: %.s
 	@echo Assembling $<...
