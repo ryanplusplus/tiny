@@ -22,10 +22,12 @@ static bool for_each_info(tiny_list_node_t* node, uint16_t index, void* context)
   return !(node == find->target);
 }
 
-static info_t find_node_info(tiny_list_t* self, tiny_list_node_t* node) {
-  info_t info = { NULL, NULL, node, 0 };
-  tiny_list_for_each(self, for_each_info, &info);
-  return info;
+static void find_node_info(tiny_list_t* self, tiny_list_node_t* node, info_t* info) {
+  info->previous = NULL;
+  info->current = NULL;
+  info->target = node;
+  info->index = 0;
+  tiny_list_for_each(self, for_each_info, info);
 }
 
 void tiny_list_init(tiny_list_t* self) {
@@ -33,7 +35,14 @@ void tiny_list_init(tiny_list_t* self) {
 }
 
 uint16_t tiny_list_count(tiny_list_t* self) {
-  return self->head == NULL ? 0 : find_node_info(self, NULL).index + 1;
+  if(self->head == NULL) {
+    return 0;
+  }
+  else {
+    info_t info;
+    find_node_info(self, NULL, &info);
+    return info.index + 1;
+  }
 }
 
 void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node) {
@@ -42,7 +51,8 @@ void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node) {
 }
 
 void tiny_list_push_back(tiny_list_t* self, tiny_list_node_t* node) {
-  info_t info = find_node_info(self, NULL);
+  info_t info;
+  find_node_info(self, NULL, &info);
 
   if(info.current == NULL) {
     self->head = node;
@@ -61,7 +71,8 @@ tiny_list_node_t* tiny_list_pop_front(tiny_list_t* self) {
 }
 
 tiny_list_node_t* tiny_list_pop_back(tiny_list_t* self) {
-  info_t info = find_node_info(self, NULL);
+  info_t info;
+  find_node_info(self, NULL, &info);
 
   if(info.previous == NULL) {
     self->head = NULL;
@@ -78,7 +89,8 @@ void tiny_list_remove(tiny_list_t* self, tiny_list_node_t* node) {
     self->head = node->next;
   }
   else {
-    info_t info = find_node_info(self, node);
+    info_t info;
+    find_node_info(self, node, &info);
 
     if(info.current == node) {
       info.previous->next = node->next;
@@ -87,11 +99,15 @@ void tiny_list_remove(tiny_list_t* self, tiny_list_node_t* node) {
 }
 
 bool tiny_list_contains(tiny_list_t* self, tiny_list_node_t* node) {
-  return find_node_info(self, node).current == node;
+  info_t info;
+  find_node_info(self, node, &info);
+  return info.current == node;
 }
 
 uint16_t tiny_list_index_of(tiny_list_t* self, tiny_list_node_t* node) {
-  return find_node_info(self, node).index;
+  info_t info;
+  find_node_info(self, node, &info);
+  return info.index;
 }
 
 void tiny_list_for_each(tiny_list_t* self, tiny_list_for_each_t callback, void* context) {
