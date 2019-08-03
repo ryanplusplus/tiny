@@ -47,7 +47,6 @@ bool tiny_timer_group_run(tiny_timer_group_t* self) {
   for_each_run_context_t context = { self, delta, false };
   tiny_list_for_each(&self->timers, for_each_run, &context);
 
-  // return false;
   return context.callback_has_been_invoked;
 }
 
