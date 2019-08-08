@@ -15,8 +15,7 @@ typedef struct {
 
 struct i_tiny_uart_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_uart_api_t* api;
 } i_tiny_uart_t;
 
@@ -27,12 +26,14 @@ typedef struct i_tiny_uart_api_t {
   void (*send)(i_tiny_uart_t* self, uint8_t byte);
 
   /*!
-   * Event raised when a byte is finished being sent.
+   * Event raised when a byte is finished being sent. Clients must assume
+   * that this is raised from an interrupt.
    */
   i_tiny_event_t* (*on_send_complete)(i_tiny_uart_t* self);
 
   /*!
-   * Event raised when a byte is received.
+   * Event raised when a byte is received. Clients must assume that this is
+   * raised from an interrupt.
    */
   i_tiny_event_t* (*on_receive)(i_tiny_uart_t* self);
 } i_tiny_uart_api_t;

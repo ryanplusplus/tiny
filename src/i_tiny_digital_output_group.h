@@ -13,8 +13,7 @@ typedef uint8_t tiny_digital_output_channel_t;
 
 struct i_tiny_digital_output_group_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_digital_output_group_api_t* api;
 } i_tiny_digital_output_group_t;
 

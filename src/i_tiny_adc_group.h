@@ -13,8 +13,7 @@ typedef uint8_t tiny_adc_channel_t;
 
 struct i_tiny_adc_group_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_adc_group_api_t* api;
 } i_tiny_adc_group_t;
 

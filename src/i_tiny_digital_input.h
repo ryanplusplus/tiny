@@ -10,8 +10,7 @@
 
 struct i_tiny_digital_input_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_digital_input_api_t* api;
 } i_tiny_digital_input_t;
 

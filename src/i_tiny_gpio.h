@@ -17,8 +17,7 @@ typedef uint8_t tiny_gpio_direction_t;
 
 struct i_tiny_gpio_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_gpio_api_t* api;
 } i_tiny_gpio_t;
 
