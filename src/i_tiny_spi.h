@@ -9,9 +9,8 @@
 #include <stdint.h>
 #include "i_tiny_event.h"
 
-typedef struct {
-  uint8_t byte;
-} tiny_spi_on_read_complete_args_t;
+typedef void (*tiny_spi_write_callback_t)(void* context);
+typedef void (*tiny_spi_read_callback_t)(void* context, uint8_t byte);
 
 struct i_tiny_spi_api_t;
 
@@ -21,38 +20,22 @@ typedef struct {
 
 typedef struct i_tiny_spi_api_t {
   /*!
-   * Writes a byte.
+   * Writes a byte. Clients should assume that the callback is raised from an
+   * interrupt.
    */
-  void (*write)(i_tiny_spi_t* self, uint8_t byte);
+  void (*write)(i_tiny_spi_t* self, uint8_t byte, tiny_spi_write_callback_t callback, void* context);
 
   /*!
-   * Reads a byte.
+   * Reads a byte. Clients should assume that the callback is raised from an
+   * interrupt.
    */
-  void (*read)(i_tiny_spi_t* self);
-
-  /*!
-   * Event raised when a byte is finished being written. Clients must assume
-   * that this is raised from an interrupt.
-   */
-  i_tiny_event_t* (*on_write_complete)(i_tiny_spi_t* self);
-
-  /*!
-   * Event raised when a byte is read. Clients must assume that this is raised
-   * from an interrupt.
-   */
-  i_tiny_event_t* (*on_read_complete)(i_tiny_spi_t* self);
+  void (*read)(i_tiny_spi_t* self, tiny_spi_read_callback_t callback, void* context);
 } i_tiny_spi_api_t;
 
-#define tiny_spi_write(self, byte) \
-  (self)->api->write((self), (byte))
+#define tiny_spi_write(self, byte, callback, context) \
+  (self)->api->write((self), (byte), (callback), (context))
 
-#define tiny_spi_read(self) \
-  (self)->api->read((self))
-
-#define tiny_spi_on_write_complete(self) \
-  (self)->api->on_write_complete((self))
-
-#define tiny_spi_on_read_complete(self) \
-  (self)->api->on_read_complete((self))
+#define tiny_spi_read(self, callback, context) \
+  (self)->api->read((self), (callback), (context))
 
 #endif
