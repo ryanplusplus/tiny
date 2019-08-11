@@ -13,8 +13,7 @@ typedef uint16_t tiny_pwm_frequency_hz_t;
 
 struct i_tiny_pwm_api_t;
 
-typedef struct
-{
+typedef struct {
   const struct i_tiny_pwm_api_t* api;
 } i_tiny_pwm_t;
 

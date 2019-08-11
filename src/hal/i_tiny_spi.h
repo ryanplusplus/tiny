@@ -7,7 +7,6 @@
 #define i_tiny_spi_h
 
 #include <stdint.h>
-#include "i_tiny_event.h"
 
 typedef void (*tiny_spi_write_callback_t)(void* context);
 typedef void (*tiny_spi_read_callback_t)(void* context, uint8_t byte);
