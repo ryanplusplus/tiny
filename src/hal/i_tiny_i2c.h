@@ -53,10 +53,10 @@ typedef struct i_tiny_i2c_api_t {
 } i_tiny_i2c_api_t;
 
 #define tiny_i2c_write(self, address, prepare_for_restart, buffer, buffer_size, callback, context) \
-  (self)->api->write((self), (address), (buffer), (prepare_for_restart), (buffer_size), (callback), (context))
+  (self)->api->write((self), (address), (prepare_for_restart), (buffer), (buffer_size), (callback), (context))
 
 #define tiny_i2c_read(self, address, prepare_for_restart, buffer, buffer_size, callback, context) \
-  (self)->api->read((self), (address), (buffer), (prepare_for_restart), (buffer_size), (callback), (context))
+  (self)->api->read((self), (address), (prepare_for_restart), (buffer), (buffer_size), (callback), (context))
 
 #define tiny_i2c_reset(self) \
   (self)->api->reset((self))
