@@ -16,7 +16,7 @@ TEST_GROUP(tiny_fsm) {
   tiny_fsm_t fsm;
 
   enum {
-    signal_1 = tiny_fsm_user_signal_start,
+    signal_1 = tiny_fsm_signal_user_start,
     signal_2
   };
 
@@ -73,15 +73,15 @@ TEST_GROUP(tiny_fsm) {
 };
 
 TEST(tiny_fsm, should_send_entry_to_the_initial_state) {
-  signal_should_be_sent_to_state(state_a, tiny_fsm_entry, NULL);
+  signal_should_be_sent_to_state(state_a, tiny_fsm_signal_entry, NULL);
   when_the_fsm_is_initialized_with_state(state_a);
 }
 
 TEST(tiny_fsm, should_send_exit_to_current_state_then_entry_to_new_state_during_transition) {
   given_that_the_fsm_has_been_initialized_with_state(state_a);
 
-  signal_should_be_sent_to_state(state_a, tiny_fsm_exit, NULL);
-  then signal_should_be_sent_to_state(state_b, tiny_fsm_entry, NULL);
+  signal_should_be_sent_to_state(state_a, tiny_fsm_signal_exit, NULL);
+  then signal_should_be_sent_to_state(state_b, tiny_fsm_signal_entry, NULL);
   when_the_fsm_is_transitioned_to(state_b);
 }
 

@@ -30,8 +30,8 @@ typedef struct {
 typedef struct {
   i_tiny_key_value_store_t interface;
   tiny_event_t on_change;
-  const tiny_ram_key_value_store_configuration_t *configuration;
-  void *storage;
+  const tiny_ram_key_value_store_configuration_t* configuration;
+  void* storage;
 } tiny_ram_key_value_store_t;
 
 /*!
@@ -39,7 +39,7 @@ typedef struct {
  */
 void tiny_ram_key_value_store_init(
   tiny_ram_key_value_store_t* self,
-  const tiny_ram_key_value_store_configuration_t *configuration,
-  void *storage);
+  const tiny_ram_key_value_store_configuration_t* configuration,
+  void* storage);
 
 #endif

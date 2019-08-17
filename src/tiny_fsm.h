@@ -16,9 +16,9 @@
 #include <stdint.h>
 
 enum {
-  tiny_fsm_entry,
-  tiny_fsm_exit,
-  tiny_fsm_user_signal_start
+  tiny_fsm_signal_entry,
+  tiny_fsm_signal_exit,
+  tiny_fsm_signal_user_start
 };
 typedef uint8_t tiny_fsm_signal_t;
 
