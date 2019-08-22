@@ -17,9 +17,7 @@ static i_tiny_event_t* on_receive(i_tiny_message_bus_t* _self) {
   return &self->on_receive.interface;
 }
 
-static const i_tiny_message_bus_api_t api = {
-  send, on_receive
-};
+static const i_tiny_message_bus_api_t api = { send, on_receive };
 
 void tiny_message_bus_init(tiny_message_bus_t* self) {
   self->interface.api = &api;
