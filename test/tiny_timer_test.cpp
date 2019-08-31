@@ -158,6 +158,16 @@ TEST(tiny_timer, should_allow_a_timer_to_be_stopped_prior_to_expiration) {
   after_time_passes_and_the_group_is_run(10);
 }
 
+TEST(tiny_timer, should_allow_a_running_timer_to_be_restarted) {
+  given_that_timer_has_been_started(&timer_1, 7);
+  given_that_timer_has_been_started(&timer_1, 5);
+
+  should_invoke_timer_callback_after(&timer_1, 5);
+
+  nothing_should_happen();
+  after_time_passes_and_the_group_is_run(10);
+}
+
 TEST(tiny_timer, should_manage_multiple_timers_simultaneously) {
   given_that_timer_has_been_started(&timer_1, 7);
   given_that_timer_has_been_started(&timer_2, 3);
