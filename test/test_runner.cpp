@@ -3,8 +3,8 @@
 #include "CppUTestExt/MockSupportPlugin.h"
 
 int main(int argc, char** argv) {
-   MockSupportPlugin mockPlugin;
-   TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
+  MockSupportPlugin mockPlugin;
+  TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
-   return RUN_ALL_TESTS(argc, argv);
+  return RUN_ALL_TESTS(argc, argv);
 }

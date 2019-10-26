@@ -3,11 +3,9 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true
   },
-  "files.associations": {
-    "array": "c",
-    "initializer_list": "c",
-    "string_view": "c",
-    "utility": "c"
+  "[cpp]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
   },
   "editor.formatOnSave": true,
 }
