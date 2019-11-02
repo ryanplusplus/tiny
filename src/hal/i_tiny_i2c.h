@@ -47,7 +47,7 @@ typedef struct i_tiny_i2c_api_t {
     void* context);
 
   /*!
-   * Resets the bus'
+   * Resets the bus.
    */
   void (*reset)(i_tiny_i2c_t* self);
 } i_tiny_i2c_api_t;
