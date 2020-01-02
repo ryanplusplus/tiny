@@ -54,3 +54,13 @@ TEST(tiny_event, should_not_publish_to_subscribers_that_have_unsubscribed) {
   mock().expectOneCall("subscriber_2").withParameter("args", (const void*)0x5678);
   tiny_event_publish(&self, (const void*)0x5678);
 }
+
+TEST(tiny_event, should_allow_subscribers_to_resubscribe) {
+  tiny_event_subscribe(&self.interface, &subscription_1);
+  tiny_event_subscribe(&self.interface, &subscription_2);
+  tiny_event_subscribe(&self.interface, &subscription_1);
+
+  mock().expectOneCall("subscriber_1").withParameter("args", (const void*)0x5678);
+  mock().expectOneCall("subscriber_2").withParameter("args", (const void*)0x5678);
+  tiny_event_publish(&self, (const void*)0x5678);
+}

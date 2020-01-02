@@ -8,6 +8,7 @@
 
 static void subscribe(i_tiny_event_t* _self, tiny_event_subscription_t* subscription) {
   reinterpret(self, _self, tiny_event_t*);
+  tiny_list_remove(&self->subscribers, &subscription->node);
   tiny_list_push_back(&self->subscribers, &subscription->node);
 }
 
