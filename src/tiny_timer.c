@@ -60,6 +60,7 @@ void tiny_timer_start(
   timer->context = context;
   timer->remaining_ticks = ticks;
 
+  tiny_list_remove(&self->timers, &timer->node);
   tiny_list_push_back(&self->timers, &timer->node);
 }
 
