@@ -22,6 +22,9 @@ typedef struct i_tiny_i2c_api_t {
    * Writes bytes from a buffer to the specified address. The stop
    * condition can be omitted in order to allow for a repeated start
    * by setting prepare_for_restart.
+   *
+   * Clients should assume that the callback could be invoked from
+   * the interrupt context.
    */
   void (*write)(
     i_tiny_i2c_t* self,
@@ -34,6 +37,9 @@ typedef struct i_tiny_i2c_api_t {
 
   /*!
    * Read bytes into a buffer from the specified address.
+   *
+   * Clients should assume that the callback could be invoked from
+   * the interrupt context.
    */
   void (*read)(
     i_tiny_i2c_t* self,
