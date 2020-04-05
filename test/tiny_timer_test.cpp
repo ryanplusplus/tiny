@@ -9,7 +9,7 @@ extern "C" {
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "tiny_time_source_double.h"
+#include "double/tiny_time_source_double.h"
 
 static tiny_timer_ticks_t restart_ticks;
 
