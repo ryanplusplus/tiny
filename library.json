@@ -1,0 +1,22 @@
+{
+  "name": "tiny",
+  "keywords": "tiny, timer, event, state machine",
+  "description": "Simple library that includes support for timers, events, state machines, etc.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanplusplus/tiny.git"
+  },
+  "authors": [
+    {
+      "name": "Ryan Hartlage",
+      "email": "ryanplusplus@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "version": "1.0.0",
+  "frameworks": "*",
+  "platforms": "*",
+  "include": [
+    "src/*"
+  ]
+}
