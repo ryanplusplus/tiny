@@ -28,7 +28,7 @@ typedef struct i_tiny_i2c_api_t {
     uint8_t address,
     bool prepare_for_restart,
     const uint8_t* buffer,
-    uint8_t buffer_size);
+    uint16_t buffer_size);
 
   /*!
    * Read bytes into a buffer from the specified address. The stop
@@ -42,7 +42,7 @@ typedef struct i_tiny_i2c_api_t {
     uint8_t address,
     bool prepare_for_restart,
     uint8_t* buffer,
-    uint8_t buffer_size);
+    uint16_t buffer_size);
 
   /*!
    * Resets the bus.

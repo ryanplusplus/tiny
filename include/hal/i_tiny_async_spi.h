@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 
-typedef void (*tiny_async_spi_callback_t)(void* context, uint8_t byte);
+typedef void (*tiny_async_spi_callback_t)(void* context);
 
 struct i_tiny_async_spi_api_t;
 
@@ -18,13 +18,22 @@ typedef struct {
 
 typedef struct i_tiny_async_spi_api_t {
   /*!
-   * Writes and reads a byte. Clients should assume that the callback is raised
+   * Performs a simultaneous write/read. If not reading or writing, the corresponding
+   * buffer can be left NULL.
+   *
+   * Clients should assume that the callback is raised
    * from an interrupt.
    */
-  void (*transfer)(i_tiny_async_spi_t* self, uint8_t byte, tiny_async_spi_callback_t callback, void* context);
+  void (*transfer)(
+    i_tiny_async_spi_t* self,
+    const uint8_t* write_buffer,
+    uint8_t* read_buffer,
+    uint16_t buffer_size,
+    tiny_async_spi_callback_t callback,
+    void* context);
 } i_tiny_async_spi_api_t;
 
-#define tiny_async_spi_transfer(self, byte, callback, context) \
-  (self)->api->transfer((self), (byte), (callback), (context))
+#define tiny_async_spi_transfer(self, write_buffer, read_buffer, buffer_size, callback, context) \
+  (self)->api->transfer((self), (write_buffer), (read_buffer), (buffer_size), (callback), (context))
 
 #endif

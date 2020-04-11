@@ -16,12 +16,17 @@ typedef struct {
 
 typedef struct i_tiny_spi_api_t {
   /*!
-   * Writes and reads a byte.
+   * Perform a simultaneous write/read. If not reading or writing, the corresponding
+   * buffer can be left NULL.
    */
-  uint8_t (*transfer)(i_tiny_spi_t* self, uint8_t byte);
+  void (*transfer)(
+    i_tiny_spi_t* self,
+    const uint8_t* write_buffer,
+    uint8_t* read_buffer,
+    uint16_t buffer_size);
 } i_tiny_spi_api_t;
 
-#define tiny_spi_transfer(self, byte) \
-  (self)->api->transfer((self), (byte), (callback), (context))
+#define tiny_spi_transfer(self, write_buffer, read_buffer, buffer_size) \
+  (self)->api->transfer((self), (read_buffer), (write_buffer), (buffer_size))
 
 #endif
