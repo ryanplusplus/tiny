@@ -27,6 +27,6 @@ typedef struct i_tiny_spi_api_t {
 } i_tiny_spi_api_t;
 
 #define tiny_spi_transfer(self, write_buffer, read_buffer, buffer_size) \
-  (self)->api->transfer((self), (read_buffer), (write_buffer), (buffer_size))
+  (self)->api->transfer((self), (write_buffer), (read_buffer), (buffer_size))
 
 #endif
