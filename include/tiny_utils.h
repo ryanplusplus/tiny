@@ -7,7 +7,7 @@
 #define tiny_utils_h
 
 #define reinterpret(_name, _cast_me, _type) \
-  _type _name = (_type)_cast_me;
+  _type _name = (_type)_cast_me
 
 #define element_count(_array) \
   (sizeof(_array) / sizeof(_array[0]))
