@@ -9,7 +9,7 @@ SRC_DIRS ?= \
   src \
   test \
 
-LDFLAGS := -lstdc++ -lCppUTest -lCppUTestExt -lm
+LDFLAGS := -fsanitize=address -lstdc++ -lCppUTest -lCppUTestExt -lm
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -19,6 +19,7 @@ INC_DIRS += $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CFLAGS +=
+CPPFLAGS += -fsanitize=address -fno-common -fno-omit-frame-pointer
 CPPFLAGS += $(INC_FLAGS) -MMD -MP -g -Wall -Wextra -Wcast-qual -Werror
 CXXFLAGS +=
 

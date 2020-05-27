@@ -120,8 +120,8 @@ TEST(tiny_ram_key_value_store, should_allow_items_to_be_written_and_read) {
   after_key_is_written_with(key_foo, (uint8_t)0xAB);
   key_should_have_value(key_foo, (uint8_t)0xAB);
 
-  after_key_is_written_with(key_bar, (uint8_t)0x12345678);
-  key_should_have_value(key_bar, (uint8_t)0x12345678);
+  after_key_is_written_with(key_bar, (uint32_t)0x12345678);
+  key_should_have_value(key_bar, (uint32_t)0x12345678);
 }
 
 TEST(tiny_ram_key_value_store, should_raise_on_change_event_when_a_value_changes) {
