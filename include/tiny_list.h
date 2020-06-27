@@ -25,7 +25,7 @@ typedef struct tiny_list_node_t {
 } tiny_list_node_t;
 
 typedef struct {
-  tiny_list_node_t* head;
+  tiny_list_node_t head;
 } tiny_list_t;
 
 typedef bool (*tiny_list_for_each_t)(tiny_list_node_t* node, uint16_t index, void* context);
