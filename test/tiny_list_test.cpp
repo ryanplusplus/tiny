@@ -5,10 +5,13 @@
 
 extern "C" {
 #include "tiny_list.h"
+#include "tiny_utils.h"
 }
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+
+static tiny_list_node_t* node_1_pointer;
 
 TEST_GROUP(tiny_list) {
   tiny_list_t list;
@@ -16,6 +19,8 @@ TEST_GROUP(tiny_list) {
 
   void setup() {
     mock().strictOrder();
+
+    node_1_pointer = &node_1;
 
     tiny_list_init(&list);
   }
@@ -27,6 +32,18 @@ TEST_GROUP(tiny_list) {
       .withParameter("index", index)
       .withParameter("context", context)
       .returnBoolValueOrDefault(true);
+  }
+
+  static bool for_each_callback_and_remove_node_1(tiny_list_node_t * node, uint16_t index, void* context) {
+    reinterpret(list, context, tiny_list_t*);
+
+    bool _return = for_each_callback(node, index, context);
+
+    if(node == node_1_pointer) {
+      tiny_list_remove(list, node);
+    }
+
+    return _return;
   }
 };
 
@@ -165,6 +182,28 @@ TEST(tiny_list, should_stop_iteration_if_the_for_each_callback_returns_false) {
     .andReturnValue(false);
 
   tiny_list_for_each(&list, for_each_callback, (void*)0x1234);
+}
+
+TEST(tiny_list, should_allow_the_current_node_to_be_removed_during_iteration) {
+  tiny_list_push_back(&list, &node_1);
+  tiny_list_push_back(&list, &node_2);
+  tiny_list_push_back(&list, &node_3);
+
+  mock()
+    .expectOneCall("for_each_callback")
+    .withParameter("node", &node_1)
+    .withParameter("index", 0)
+    .withParameter("context", &list)
+    .andReturnValue(true);
+
+  mock()
+    .expectOneCall("for_each_callback")
+    .withParameter("node", &node_2)
+    .withParameter("index", 1)
+    .withParameter("context", &list)
+    .andReturnValue(false);
+
+  tiny_list_for_each(&list, for_each_callback, &list);
 }
 
 TEST(tiny_list, should_indicate_whether_list_contains_a_given_node) {

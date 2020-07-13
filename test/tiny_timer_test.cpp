@@ -244,6 +244,6 @@ TEST(tiny_timer, should_not_allow_a_timer_to_be_starved) {
   should_invoke_timer_callback(&timer_with_restart);
   after_time_passes_and_the_group_is_run(3);
 
-  should_invoke_timer_callback(&timer_with_restart);
+  should_invoke_timer_callback(&timer_1);
   after_the_group_is_run();
 }

@@ -96,11 +96,13 @@ void tiny_list_for_each(tiny_list_t* self, tiny_list_for_each_t callback, void* 
   uint16_t index = 0;
 
   while(current != &self->head) {
+    tiny_list_node_t* next = current->next;
+
     if(!callback(current, index, context)) {
       return;
     }
 
-    current = current->next;
+    current = next;
     index++;
   }
 }
