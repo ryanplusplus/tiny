@@ -33,10 +33,13 @@
 #ifndef tiny_ram_key_value_store_macros_h
 #define tiny_ram_key_value_store_macros_h
 
+#include <stdint.h>
+#include <stddef.h>
+
 #define ram_key_value_pairs_expand_as_enumeration(_key, value_type) _key,
 
-#define enumerate_ram_key_value_pairs(_key_value_pairs)        \
-  enum {                                                       \
+#define enumerate_ram_key_value_pairs(_key_value_pairs)         \
+  enum {                                                        \
     _key_value_pairs(ram_key_value_pairs_expand_as_enumeration) \
   }
 
@@ -45,7 +48,7 @@
 
 #define generate_storage_type_for_ram_key_value_pairs(_key_value_pairs) \
   typedef struct {                                                      \
-    _key_value_pairs(ram_key_value_pairs_expand_as_storage_item)         \
+    _key_value_pairs(ram_key_value_pairs_expand_as_storage_item)        \
   } _storage_type_name
 
 #define ram_key_value_pairs_expand_as_configuration_item(_key, _value_type) \

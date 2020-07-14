@@ -1,6 +1,8 @@
 /*!
  * @file
- * @brief Assumes chip select is managed by the client.
+ * @brief Abstraction for performing a synchronous SPI transfer.
+ *
+ * Assumes chip select is managed by the client.
  */
 
 #ifndef i_tiny_spi_h
