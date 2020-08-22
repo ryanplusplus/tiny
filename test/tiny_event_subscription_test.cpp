@@ -10,23 +10,27 @@ extern "C" {
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(tiny_event_subscription) {
+TEST_GROUP(tiny_event_subscription)
+{
   tiny_event_subscription_t self;
   uint8_t context;
 
-  static void callback(void* context, const void* args) {
+  static void callback(void* context, const void* args)
+  {
     mock()
       .actualCall("callback")
       .withParameter("context", context)
       .withParameter("args", args);
   }
 
-  void setup() {
+  void setup()
+  {
     tiny_event_subscription_init(&self, &context, callback);
   }
 };
 
-TEST(tiny_event_subscription, should_invoke_callback_when_published) {
+TEST(tiny_event_subscription, should_invoke_callback_when_published)
+{
   mock()
     .expectOneCall("callback")
     .withParameter("context", &context)

@@ -14,7 +14,7 @@ typedef uint8_t tiny_key_value_store_key_t;
 
 typedef struct {
   tiny_key_value_store_key_t key;
-  const void *value;
+  const void* value;
 } tiny_key_value_store_on_change_args_t;
 
 struct i_tiny_key_value_store_api_t;

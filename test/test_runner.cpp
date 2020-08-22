@@ -2,7 +2,8 @@
 #include "CppUTest/TestRegistry.h"
 #include "CppUTestExt/MockSupportPlugin.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
   MockSupportPlugin mockPlugin;
   TestRegistry::getCurrentRegistry()->installPlugin(&mockPlugin);
 
