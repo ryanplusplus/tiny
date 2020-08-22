@@ -38,10 +38,10 @@ void tiny_timer_group_init(
   i_tiny_time_source_t* time_source);
 
 /*!
- * Runs a timer group. Services at most one timer per call. Returns true if a timer
- * expired and was serviced and false otherwise.
+ * Runs a timer group. Services at most one timer per call. Returns the number
+ * of ticks until the next timer will be ready to run.
  */
-bool tiny_timer_group_run(
+tiny_timer_ticks_t tiny_timer_group_run(
   tiny_timer_group_t* self);
 
 /*!

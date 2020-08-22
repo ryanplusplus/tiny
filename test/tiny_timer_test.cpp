@@ -109,15 +109,9 @@ TEST_GROUP(tiny_timer) {
     CHECK_TRUE(tiny_timer_is_running(&group, timer));
   }
 
-  void should_indicate_that_a_callback_was_invoked_during_run() {
+  void should_run_and_indicate_that_the_next_timer_will_be_ready_in(tiny_timer_ticks_t ticks) {
     mock().disable();
-    CHECK_TRUE(tiny_timer_group_run(&group));
-    mock().enable();
-  }
-
-  void should_indicate_that_a_callback_was_not_invoked_during_run() {
-    mock().disable();
-    CHECK_FALSE(tiny_timer_group_run(&group));
+    CHECK_EQUAL(ticks, tiny_timer_group_run(&group));
     mock().enable();
   }
 
@@ -193,19 +187,25 @@ TEST(tiny_timer, should_invoke_at_most_one_callback_per_run) {
   after_the_group_is_run();
 }
 
-TEST(tiny_timer, should_indicate_whether_a_callback_was_invoked_during_run) {
+TEST(tiny_timer, should_give_the_time_until_the_next_timer_is_ready) {
   given_that_timer_has_been_started(&timer_1, 3);
   given_that_timer_has_been_started(&timer_2, 5);
+  given_that_timer_has_been_started(&timer_3, 5);
 
-  should_indicate_that_a_callback_was_not_invoked_during_run();
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(3);
 
-  after(3);
-  should_indicate_that_a_callback_was_invoked_during_run();
-  should_indicate_that_a_callback_was_not_invoked_during_run();
+  after(1);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(2);
+
+  after(1);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(1);
+
+  after(1);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(2);
 
   after(2);
-  should_indicate_that_a_callback_was_invoked_during_run();
-  should_indicate_that_a_callback_was_not_invoked_during_run();
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(0);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(0xFFFF);
 }
 
 TEST(tiny_timer, should_indicate_whether_a_timer_is_running) {
