@@ -127,10 +127,11 @@ TEST_GROUP(tiny_timer)
     CHECK_TRUE(tiny_timer_is_running(&group, timer));
   }
 
-  void should_run_and_indicate_that_the_next_timer_will_be_ready_in(tiny_timer_ticks_t ticks)
+  void should_run_and_indicate_that_the_next_timer_will_be_ready_in(tiny_timer_ticks_t expected)
   {
     mock().disable();
-    CHECK_EQUAL(ticks, tiny_timer_group_run(&group));
+    tiny_timer_ticks_t actual = tiny_timer_group_run(&group);
+    CHECK_EQUAL(expected, actual);
     mock().enable();
   }
 
@@ -235,6 +236,14 @@ TEST(tiny_timer, should_give_the_time_until_the_next_timer_is_ready)
   after(2);
   should_run_and_indicate_that_the_next_timer_will_be_ready_in(0);
   should_run_and_indicate_that_the_next_timer_will_be_ready_in(0xFFFF);
+}
+
+TEST(tiny_timer, should_account_for_restarted_timers_when_giving_time_until_next_ready)
+{
+  given_that_timer_with_restart_has_been_started(&timer_with_restart, 5);
+
+  after(5);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(5);
 }
 
 TEST(tiny_timer, should_indicate_whether_a_timer_is_running)

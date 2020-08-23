@@ -3,11 +3,13 @@
  * @brief
  */
 
+#include <stddef.h>
 #include "tiny_timer.h"
 #include "tiny_utils.h"
 
 void tiny_timer_group_init(tiny_timer_group_t* self, i_tiny_time_source_t* time_source)
 {
+  self->run_context = NULL;
   self->time_source = time_source;
   self->last_ticks = tiny_time_source_ticks(time_source);
   tiny_list_init(&self->timers);
@@ -56,7 +58,9 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
   self->last_ticks = current_ticks;
 
   for_each_run_context_t context = { self, delta, UINT16_MAX, false };
+  self->run_context = &context;
   tiny_list_for_each(&self->timers, for_each_run, &context);
+  self->run_context = NULL;
 
   return context.next_ready;
 }
@@ -74,6 +78,14 @@ void tiny_timer_start(
 
   tiny_list_remove(&self->timers, &timer->node);
   tiny_list_push_back(&self->timers, &timer->node);
+
+  if(self->run_context) {
+    reinterpret(run_context, self->run_context, for_each_run_context_t*);
+
+    if(ticks < run_context->next_ready) {
+      run_context->next_ready = ticks;
+    }
+  }
 }
 
 void tiny_timer_stop(tiny_timer_group_t* self, tiny_timer_t* timer)
