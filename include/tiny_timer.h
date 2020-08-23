@@ -1,6 +1,9 @@
 /*!
  * @file
  * @brief Runs one-shot timers using client-allocated memory.
+ *
+ * Timer durations may be longer than specified but will not be shorter (within
+ * the limits of the tick resolution).
  */
 
 #ifndef tiny_timer_h
