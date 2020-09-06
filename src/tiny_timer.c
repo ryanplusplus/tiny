@@ -5,7 +5,6 @@
 
 #include <stddef.h>
 #include "tiny_timer.h"
-#include "tiny_list_iterator.h"
 #include "tiny_utils.h"
 
 void tiny_timer_group_init(tiny_timer_group_t* self, i_tiny_time_source_t* time_source)

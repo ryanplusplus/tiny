@@ -10,25 +10,24 @@
 typedef struct {
   tiny_list_node_t* previous;
   tiny_list_node_t* current;
-  tiny_list_node_t* target;
   uint16_t index;
 } info_t;
 
-static bool for_each_info(tiny_list_node_t* node, uint16_t index, void* context)
-{
-  reinterpret(find, context, info_t*);
-  find->index = index;
-  find->previous = find->current;
-  find->current = node;
-  return !(node == find->target);
-}
-
-static void find_node_info(tiny_list_t* self, tiny_list_node_t* node, info_t* info)
+static void find_node_info(tiny_list_t* self, tiny_list_node_t* target, info_t* info)
 {
   info->current = &self->head;
-  info->target = node;
   info->index = 0;
-  tiny_list_for_each(self, for_each_info, info);
+
+  tiny_list_iterate(self, tiny_list_node_t, node, {
+    info->previous = info->current;
+    info->current = node;
+
+    if(node == target) {
+      break;
+    }
+
+    info->index++;
+  });
 }
 
 void tiny_list_init(tiny_list_t* self)
@@ -102,19 +101,20 @@ uint16_t tiny_list_index_of(tiny_list_t* self, tiny_list_node_t* node)
   return info.index;
 }
 
-void tiny_list_for_each(tiny_list_t* self, tiny_list_for_each_t callback, void* context)
+void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list)
 {
-  tiny_list_node_t* current = self->head.next;
-  uint16_t index = 0;
+  self->list = list;
+  self->current = list->head.next;
+}
 
-  while(current != &self->head) {
-    tiny_list_node_t* next = current->next;
-
-    if(!callback(current, index, context)) {
-      return;
-    }
-
-    current = next;
-    index++;
+tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self)
+{
+  if(self->current == &self->list->head) {
+    return NULL;
+  }
+  else {
+    tiny_list_node_t* item = self->current;
+    self->current = self->current->next;
+    return item;
   }
 }
