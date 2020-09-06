@@ -18,7 +18,7 @@ static void find_node_info(tiny_list_t* self, tiny_list_node_t* target, info_t* 
   info->current = &self->head;
   info->index = 0;
 
-  tiny_list_iterate(self, tiny_list_node_t, node, {
+  tiny_list_for_each(self, tiny_list_node_t, node, {
     info->previous = info->current;
     info->current = node;
 

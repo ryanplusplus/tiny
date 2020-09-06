@@ -31,7 +31,7 @@ void tiny_event_init(tiny_event_t* self)
 
 void tiny_event_publish(tiny_event_t* self, const void* args)
 {
-  tiny_list_iterate(&self->subscribers, tiny_event_subscription_t, subscription, {
+  tiny_list_for_each(&self->subscribers, tiny_event_subscription_t, subscription, {
     tiny_event_subscription_publish(subscription, args);
   });
 }

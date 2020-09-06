@@ -23,7 +23,7 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
   self->next_ready = UINT16_MAX;
   bool callback_has_been_invoked = false;
 
-  tiny_list_iterate(&self->timers, tiny_timer_t, timer, {
+  tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
     if(delta < timer->remaining_ticks) {
       timer->remaining_ticks -= delta;
 
