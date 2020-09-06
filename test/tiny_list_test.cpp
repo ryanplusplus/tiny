@@ -26,29 +26,6 @@ TEST_GROUP(tiny_list)
 
     tiny_list_init(&list);
   }
-
-  static bool for_each_callback(tiny_list_node_t * node, uint16_t index, void* context)
-  {
-    return mock()
-      .actualCall("for_each_callback")
-      .withParameter("node", node)
-      .withParameter("index", index)
-      .withParameter("context", context)
-      .returnBoolValueOrDefault(true);
-  }
-
-  static bool for_each_callback_and_remove_node_1(tiny_list_node_t * node, uint16_t index, void* context)
-  {
-    reinterpret(list, context, tiny_list_t*);
-
-    bool _return = for_each_callback(node, index, context);
-
-    if(node == node_1_pointer) {
-      tiny_list_remove(list, node);
-    }
-
-    return _return;
-  }
 };
 
 TEST(tiny_list, should_be_empty_after_init)
@@ -159,52 +136,37 @@ TEST(tiny_list, should_not_fail_if_removed_node_is_not_in_the_list)
   CHECK(&node_1 == tiny_list_pop_front(&list));
 }
 
-TEST(tiny_list, should_call_for_each_callback_for_each_node_in_list)
+TEST(tiny_list, should_iterate_through_all_nodes_in_order_with_for_each)
 {
-  // tiny_list_push_back(&list, &node_1);
-  // tiny_list_push_back(&list, &node_2);
-  // tiny_list_push_back(&list, &node_3);
+  tiny_list_push_back(&list, &node_1);
+  tiny_list_push_back(&list, &node_2);
+  tiny_list_push_back(&list, &node_3);
 
-  // mock()
-  //   .expectOneCall("for_each_callback")
-  //   .withParameter("node", &node_1)
-  //   .withParameter("index", 0)
-  //   .withParameter("context", (void*)0x1234);
-  // mock()
-  //   .expectOneCall("for_each_callback")
-  //   .withParameter("node", &node_2)
-  //   .withParameter("index", 1)
-  //   .withParameter("context", (void*)0x1234);
-  // mock()
-  //   .expectOneCall("for_each_callback")
-  //   .withParameter("node", &node_3)
-  //   .withParameter("index", 2)
-  //   .withParameter("context", (void*)0x1234);
+  mock().expectOneCall("for_each").withParameter("node", &node_1);
+  mock().expectOneCall("for_each").withParameter("node", &node_2);
+  mock().expectOneCall("for_each").withParameter("node", &node_3);
 
-  // tiny_list_for_each(&list, for_each_callback, (void*)0x1234);
+  tiny_list_for_each(&list, tiny_list_node_t, node, {
+    mock().actualCall("for_each").withParameter("node", node);
+  });
 }
 
 TEST(tiny_list, should_allow_the_current_node_to_be_removed_during_iteration)
 {
-  // tiny_list_push_back(&list, &node_1);
-  // tiny_list_push_back(&list, &node_2);
-  // tiny_list_push_back(&list, &node_3);
+  tiny_list_push_back(&list, &node_1);
+  tiny_list_push_back(&list, &node_2);
+  tiny_list_push_back(&list, &node_3);
 
-  // mock()
-  //   .expectOneCall("for_each_callback")
-  //   .withParameter("node", &node_1)
-  //   .withParameter("index", 0)
-  //   .withParameter("context", &list)
-  //   .andReturnValue(true);
+  mock().expectOneCall("for_each").withParameter("node", &node_1);
+  mock().expectOneCall("for_each").withParameter("node", &node_2);
+  mock().expectOneCall("for_each").withParameter("node", &node_3);
 
-  // mock()
-  //   .expectOneCall("for_each_callback")
-  //   .withParameter("node", &node_2)
-  //   .withParameter("index", 1)
-  //   .withParameter("context", &list)
-  //   .andReturnValue(false);
-
-  // tiny_list_for_each(&list, for_each_callback, &list);
+  tiny_list_for_each(&list, tiny_list_node_t, node, {
+    if(node == &node_1) {
+      tiny_list_remove(&list, node);
+    }
+    mock().actualCall("for_each").withParameter("node", node);
+  });
 }
 
 TEST(tiny_list, should_indicate_whether_list_contains_a_given_node)
