@@ -24,7 +24,9 @@ typedef struct {
   tiny_list_node_t node;
   tiny_timer_callback_t callback;
   void* context;
+  tiny_timer_ticks_t start_ticks;
   tiny_timer_ticks_t remaining_ticks;
+  bool periodic;
 } tiny_timer_t;
 
 typedef struct tiny_timer_group_t {
@@ -52,6 +54,16 @@ tiny_timer_ticks_t tiny_timer_group_run(
  * Starts a timer.
  */
 void tiny_timer_start(
+  tiny_timer_group_t* self,
+  tiny_timer_t* timer,
+  tiny_timer_ticks_t ticks,
+  tiny_timer_callback_t callback,
+  void* context);
+
+/*!
+ * Starts a periodic timer.
+ */
+void tiny_timer_start_periodic(
   tiny_timer_group_t* self,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
