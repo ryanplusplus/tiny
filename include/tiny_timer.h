@@ -31,7 +31,7 @@ typedef struct tiny_timer_group_t {
   i_tiny_time_source_t* time_source;
   tiny_list_t timers;
   tiny_time_source_ticks_t last_ticks;
-  void* run_context;
+  tiny_timer_ticks_t next_ready;
 } tiny_timer_group_t;
 
 /*!
