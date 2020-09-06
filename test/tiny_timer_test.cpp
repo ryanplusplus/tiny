@@ -59,6 +59,29 @@ TEST_GROUP(tiny_timer)
     after_timer_with_restart_is_started(timer, ticks);
   }
 
+  static void callback_with_stop(tiny_timer_group_t * group, void* context)
+  {
+    callback(group, context);
+    tiny_timer_stop(group, (tiny_timer_t*)context);
+  }
+
+  void given_that_periodic_timer_with_stop_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
+  {
+    tiny_timer_start_periodic(&group, timer, ticks, callback_with_stop, timer);
+  }
+
+  static void callback_with_periodic_restart(tiny_timer_group_t * group, void* context)
+  {
+    callback(group, context);
+    tiny_timer_start_periodic(group, (tiny_timer_t*)context, restart_ticks, callback, context);
+  }
+
+  void given_that_periodic_timer_with_restart_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks, tiny_timer_ticks_t _restart_ticks)
+  {
+    restart_ticks = _restart_ticks;
+    tiny_timer_start_periodic(&group, timer, ticks, callback_with_periodic_restart, timer);
+  }
+
   void after_timer_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
     tiny_timer_start(&group, timer, ticks, callback, timer);
@@ -67,6 +90,16 @@ TEST_GROUP(tiny_timer)
   void given_that_timer_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
     after_timer_is_started(timer, ticks);
+  }
+
+  void after_periodic_timer_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
+  {
+    tiny_timer_start_periodic(&group, timer, ticks, callback, timer);
+  }
+
+  void given_that_periodic_timer_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
+  {
+    after_periodic_timer_is_started(timer, ticks);
   }
 
   void after_timer_is_stopped(tiny_timer_t * timer)
@@ -203,6 +236,33 @@ TEST(tiny_timer, should_manage_multiple_timers_simultaneously)
   should_invoke_timer_callback_after(&timer_1, 4);
 }
 
+TEST(tiny_timer, should_run_periodic_timers)
+{
+  given_that_periodic_timer_has_been_started(&timer_1, 7);
+
+  should_invoke_timer_callback_after(&timer_1, 7);
+  should_invoke_timer_callback_after(&timer_1, 7);
+}
+
+TEST(tiny_timer, should_allow_periodic_timers_to_be_stopped_from_their_callback)
+{
+  given_that_periodic_timer_with_stop_has_been_started(&timer_1, 7);
+
+  should_invoke_timer_callback_after(&timer_1, 7);
+
+  nothing_should_happen();
+  after(7);
+}
+
+TEST(tiny_timer, should_allow_periodic_timers_to_have_period_changed_in_callback)
+{
+  given_that_periodic_timer_with_restart_has_been_started(&timer_1, 7, 5);
+
+  should_invoke_timer_callback_after(&timer_1, 7);
+  should_invoke_timer_callback_after(&timer_1, 5);
+  should_invoke_timer_callback_after(&timer_1, 5);
+}
+
 TEST(tiny_timer, should_invoke_at_most_one_callback_per_run)
 {
   given_that_timer_has_been_started(&timer_1, 7);
@@ -244,6 +304,15 @@ TEST(tiny_timer, should_account_for_restarted_timers_when_giving_time_until_next
 
   after(5);
   should_run_and_indicate_that_the_next_timer_will_be_ready_in(5);
+}
+
+TEST(tiny_timer, should_account_for_periodic_timers_when_giving_time_until_next_ready)
+{
+  given_that_periodic_timer_has_been_started(&timer_1, 2);
+  given_that_timer_has_been_started(&timer_2, 7);
+
+  after(2);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(2);
 }
 
 TEST(tiny_timer, should_indicate_whether_a_timer_is_running)
