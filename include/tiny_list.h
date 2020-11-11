@@ -31,7 +31,6 @@ typedef struct {
 
 typedef struct
 {
-  tiny_list_t* list;
   tiny_list_node_t* current;
 } tiny_list_iterator_t;
 
@@ -88,16 +87,16 @@ void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list);
 /*!
  * Return a pointer to the next node or NULL if there are no more nodes.
  */
-tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self);
+tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self, tiny_list_t* list);
 
-#define tiny_list_for_each(_list, _type, _item, ...)         \
-  do {                                                       \
-    tiny_list_iterator_t _it;                                \
-    tiny_list_iterator_init(&_it, _list);                    \
-    _type* _item;                                            \
-    while((_item = (_type*)tiny_list_iterator_next(&_it))) { \
-      __VA_ARGS__                                            \
-    }                                                        \
+#define tiny_list_for_each(_list, _type, _item, ...)                \
+  do {                                                              \
+    tiny_list_iterator_t _it;                                       \
+    tiny_list_iterator_init(&_it, _list);                           \
+    _type* _item;                                                   \
+    while((_item = (_type*)tiny_list_iterator_next(&_it, _list))) { \
+      __VA_ARGS__                                                   \
+    }                                                               \
   } while(0)
 
 #endif

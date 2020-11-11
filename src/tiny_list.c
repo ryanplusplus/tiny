@@ -103,13 +103,12 @@ uint16_t tiny_list_index_of(tiny_list_t* self, tiny_list_node_t* node)
 
 void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list)
 {
-  self->list = list;
   self->current = list->head.next;
 }
 
-tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self)
+tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self, tiny_list_t* list)
 {
-  if(self->current == &self->list->head) {
+  if(self->current == &list->head) {
     return NULL;
   }
   else {

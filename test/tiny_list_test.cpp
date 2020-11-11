@@ -188,7 +188,7 @@ TEST(tiny_list, should_indicate_whether_list_contains_a_given_node)
   tiny_list_push_back(&list, &node_3);
   CHECK(true == tiny_list_contains(&list, &node_1));
   CHECK(true == tiny_list_contains(&list, &node_2));
-  CHECK(true == tiny_list_contains(&list, &node_3))
+  CHECK(true == tiny_list_contains(&list, &node_3));
 }
 
 TEST(tiny_list, should_give_the_index_of_a_specified_node)
