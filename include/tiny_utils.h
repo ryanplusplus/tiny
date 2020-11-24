@@ -6,6 +6,8 @@
 #ifndef tiny_utils_h
 #define tiny_utils_h
 
+#include <stddef.h>
+
 #define reinterpret(_name, _cast_me, _type) \
   _type _name = (_type)_cast_me
 
