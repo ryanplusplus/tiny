@@ -9,7 +9,9 @@ SRC_DIRS ?= \
   src \
   test \
 
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
+SRC_FILES ?= \
+
+SRCS := $(SRC_FILES) $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
