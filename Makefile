@@ -22,7 +22,8 @@ CFLAGS +=
 CPPFLAGS += -fsanitize=address -fno-omit-frame-pointer
 CPPFLAGS += $(INC_FLAGS) -MMD -MP -g -Wall -Wextra -Wcast-qual -Werror
 CXXFLAGS +=
-LDFLAGS := -fsanitize=address -lstdc++ -lCppUTest -lCppUTestExt -lm
+LDFLAGS := -fsanitize=address
+LDLIBS := -lstdc++ -lCppUTest -lCppUTestExt -lm
 
 .PHONY: test
 test: $(BUILD_DIR)/$(TARGET)
@@ -32,7 +33,7 @@ test: $(BUILD_DIR)/$(TARGET)
 $(BUILD_DIR)/$(TARGET): $(OBJS)
 	@echo Linking $@...
 	@$(MKDIR_P) $(dir $@)
-	@$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	@$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 $(BUILD_DIR)/%.s.o: %.s
 	@echo Assembling $<...
