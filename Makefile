@@ -32,29 +32,27 @@ test: $(BUILD_DIR)/$(TARGET)
 
 $(BUILD_DIR)/$(TARGET): $(OBJS)
 	@echo Linking $@...
-	@$(MKDIR_P) $(dir $@)
+	@mkdir -p $(dir $@)
 	@$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 $(BUILD_DIR)/%.s.o: %.s
 	@echo Assembling $<...
-	@$(MKDIR_P) $(dir $@)
+	@mkdir -p $(dir $@)
 	@$(AS) $(ASFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.c.o: %.c
 	@echo Compiling $<...
-	@$(MKDIR_P) $(dir $@)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	@echo Compiling $<...
-	@$(MKDIR_P) $(dir $@)
+	@mkdir -p $(dir $@)
 	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
 	@echo Cleaning...
-	@$(RM) -rf $(BUILD_DIR)
-
-MKDIR_P ?= mkdir -p
+	@rm -rf $(BUILD_DIR)
 
 -include $(DEPS)
