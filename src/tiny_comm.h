@@ -28,6 +28,8 @@ typedef struct {
   uint8_t send_buffer_offset;
   uint8_t send_state;
 
+  bool send_escaped;
+
   // makes sure we don't handle send complete
   // while we're setting up another send)
   volatile bool send_in_progress;

@@ -43,11 +43,6 @@ TEST_GROUP(tiny_comm)
       receive_buffer_size);
   }
 
-  void given_that_auto_send_complete_is_enabled()
-  {
-    tiny_uart_double_set_auto_send_complete(&uart, true);
-  }
-
   void after_send_completes()
   {
     tiny_uart_double_trigger_send_complete(&uart);
@@ -125,62 +120,86 @@ TEST_GROUP(tiny_comm)
   {
     CHECK_FALSE(tiny_comm_sending(&self.interface));
   }
+
+  void and_all_sends_complete()
+  {
+    while(tiny_uart_double_sending(&uart)) {
+      tiny_uart_double_trigger_send_complete(&uart);
+    }
+  }
+
+  void and_all_sends_have_completed()
+  {
+    mock().disable();
+    and_all_sends_complete();
+    mock().enable();
+  }
 };
 
 TEST(tiny_comm, should_report_that_send_is_in_process_when_sending)
 {
-  given_that_payload_has_been_sent(1, 2, 3);
+  given_that_payload_has_been_sent(11, 12, 13);
   should_be_sending();
 }
 
 TEST(tiny_comm, should_report_that_send_is_not_in_process_after_send_completes)
 {
-  given_that_auto_send_complete_is_enabled();
-  given_that_payload_has_been_sent(1, 2, 3);
+  given_that_payload_has_been_sent(11, 12, 13);
+  and_all_sends_have_completed();
   should_not_be_sending();
 }
 
 TEST(tiny_comm, should_not_send_payloads_that_are_too_large)
 {
-  given_that_payload_has_been_sent(1, 2, 3, 4, 5, 6);
+  given_that_payload_has_been_sent(11, 12, 13, 14, 15, 16);
   should_not_be_sending();
 }
 
 TEST(tiny_comm, should_send_the_next_byte_only_after_previous_send_completes)
 {
   byte_should_be_sent(stx);
-  when_payload_is_sent(1, 2, 3);
+  when_payload_is_sent(11, 12, 13);
 
-  byte_should_be_sent(1);
+  byte_should_be_sent(11);
   after_send_completes();
 
-  byte_should_be_sent(2);
+  byte_should_be_sent(12);
   after_send_completes();
 }
 
 TEST(tiny_comm, should_send_an_empty_payload)
 {
-  given_that_auto_send_complete_is_enabled();
   bytes_should_be_sent(stx, crc_of(), etx);
   when_payload_is_sent();
+  and_all_sends_complete();
 }
 
 TEST(tiny_comm, should_send_a_non_empty_payload)
 {
-  given_that_auto_send_complete_is_enabled();
-  bytes_should_be_sent(stx, 1, 2, 3, crc_of(1, 2, 3), etx);
-  when_payload_is_sent(1, 2, 3);
+  bytes_should_be_sent(stx, 11, 12, 13, crc_of(11, 12, 13), etx);
+  when_payload_is_sent(11, 12, 13);
+  and_all_sends_complete();
 }
 
 TEST(tiny_comm, should_send_a_full_size_payload)
 {
-  given_that_auto_send_complete_is_enabled();
-  bytes_should_be_sent(stx, 5, 4, 3, 2, 1, crc_of(5, 4, 3, 2, 1), etx);
-  when_payload_is_sent(5, 4, 3, 2, 1);
+  bytes_should_be_sent(stx, 15, 14, 13, 12, 11, crc_of(15, 14, 13, 12, 11), etx);
+  when_payload_is_sent(15, 14, 13, 12, 11);
+  and_all_sends_complete();
 }
 
-// send escapes
+TEST(tiny_comm, should_escape_control_characters_in_the_send_payload)
+{
+  bytes_should_be_sent(stx, dle, stx, dle, etx, dle, dle, crc_of(stx, etx, dle), etx);
+  when_payload_is_sent(stx, etx, dle);
+  and_all_sends_complete();
+}
 
-// send escapes when crc needs to be escaped
+TEST(tiny_comm, should_escape_control_characters_in_the_crc)
+{
+  bytes_should_be_sent(stx, 0x0E, 0x65, dle, stx, dle, etx, etx);
+  when_payload_is_sent(0x0E, 0x65);
+  and_all_sends_complete();
+}
 
 // ignore send complete events when not sending

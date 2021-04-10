@@ -25,6 +25,31 @@ enum {
 
 typedef tiny_comm_t self_t;
 
+static void send_control_character(self_t* self, uint8_t byte)
+{
+  tiny_uart_send(self->uart, byte);
+}
+
+static bool control_character(uint8_t byte)
+{
+  return byte == stx || byte == etx || byte == dle;
+}
+
+//! Returns true if the character was sent or false if it was escaped
+static bool send_byte(self_t* self, uint8_t byte)
+{
+  if(!self->send_escaped && control_character(byte)) {
+    self->send_escaped = true;
+    tiny_uart_send(self->uart, dle);
+  }
+  else {
+    self->send_escaped = false;
+    tiny_uart_send(self->uart, byte);
+  }
+
+  return !self->send_escaped;
+}
+
 // May be running in an interrupt context
 static void send_complete(void* context, const void* args)
 {
@@ -37,30 +62,31 @@ static void send_complete(void* context, const void* args)
     self->send_state = send_state_payload;
   }
 
-  // handle escapes
   if(self->send_state == send_state_payload) {
     if(self->send_buffer_offset < self->send_buffer_count) {
-      tiny_uart_send(self->uart, self->send_buffer[self->send_buffer_offset++]);
+      if(send_byte(self, self->send_buffer[self->send_buffer_offset])) {
+        self->send_buffer_offset++;
+      }
       return;
     }
     else {
-      self->send_state = send_state_crc_msb;
-      tiny_uart_send(self->uart, self->send_crc >> 8);
+      if(send_byte(self, self->send_crc >> 8)) {
+        self->send_state = send_state_crc_msb;
+      }
       return;
     }
   }
 
-  // handle escapes
   if(self->send_state == send_state_crc_msb) {
-    self->send_state = send_state_crc_lsb;
-    tiny_uart_send(self->uart, (uint8_t)self->send_crc);
+    if(send_byte(self, (uint8_t)self->send_crc)) {
+      self->send_state = send_state_crc_lsb;
+    }
     return;
   }
 
-  // handle escapes
   if(self->send_state == send_state_crc_lsb) {
     self->send_state = send_state_etx;
-    tiny_uart_send(self->uart, etx);
+    send_control_character(self, etx);
     return;
   }
 
@@ -89,7 +115,7 @@ static void send(i_tiny_comm_t* _self, const void* payload, uint8_t length)
   }
   self->send_in_progress = true;
 
-  tiny_uart_send(self->uart, stx);
+  send_control_character(self, stx);
 }
 
 static bool sending(i_tiny_comm_t* _self)
