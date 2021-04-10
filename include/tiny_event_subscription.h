@@ -18,7 +18,7 @@ typedef struct {
 } tiny_event_subscription_t;
 
 /*!
- * Initializes an event subscription;
+ * Initializes an event subscription.
  */
 void tiny_event_subscription_init(
   tiny_event_subscription_t* self,
