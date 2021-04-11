@@ -50,5 +50,5 @@ void tiny_uart_double_trigger_send_complete(tiny_uart_double_t* self)
 void tiny_uart_double_trigger_receive(tiny_uart_double_t* self, uint8_t byte)
 {
   tiny_uart_on_receive_args_t args = { byte };
-  tiny_event_publish(&self->send_complete, &args);
+  tiny_event_publish(&self->receive, &args);
 }

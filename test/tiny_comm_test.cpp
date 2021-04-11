@@ -12,6 +12,8 @@ extern "C" {
 #include "CppUTestExt/MockSupport.h"
 #include "tiny_uart_double.h"
 
+#define and_
+
 TEST_GROUP(tiny_comm)
 {
   enum {
@@ -22,18 +24,21 @@ TEST_GROUP(tiny_comm)
 
   enum {
     send_buffer_size = 5,
-    receive_buffer_size = 10
+    receive_buffer_size = 4
   };
 
   tiny_comm_t self;
   uint8_t send_buffer[send_buffer_size];
   uint8_t receive_buffer[receive_buffer_size];
 
+  tiny_event_subscription_t receive_subscription;
+
   tiny_uart_double_t uart;
 
   void setup()
   {
     tiny_uart_double_init(&uart);
+
     tiny_comm_init(
       &self,
       &uart.interface,
@@ -41,6 +46,19 @@ TEST_GROUP(tiny_comm)
       sizeof(send_buffer),
       receive_buffer,
       receive_buffer_size);
+
+    tiny_event_subscription_init(&receive_subscription, nullptr, payload_received);
+    tiny_event_subscribe(tiny_comm_on_receive(&self.interface), &receive_subscription);
+  }
+
+  static void payload_received(void* context, const void* _args)
+  {
+    reinterpret(args, _args, const tiny_comm_on_receive_args_t*);
+    (void)context;
+
+    mock()
+      .actualCall("payload_received")
+      .withMemoryBufferParameter("payload", (const uint8_t*)args->payload, args->length);
   }
 
   void after_send_completes()
@@ -136,6 +154,42 @@ TEST_GROUP(tiny_comm)
     and_all_sends_complete();
     mock().enable();
   }
+
+#define after_bytes_are_received(...) _after_bytes_are_received<__VA_ARGS__>()
+  template <uint8_t... bytes>
+  void _after_bytes_are_received()
+  {
+    for(auto byte : { bytes... }) {
+      tiny_uart_double_trigger_receive(&uart, byte);
+    }
+  }
+
+#define should_receive_payload(...) _should_receive_payload<__VA_ARGS__>()
+  template <uint8_t... bytes>
+  void _should_receive_payload()
+  {
+    static const uint8_t payload[] = { bytes... };
+
+    mock()
+      .expectOneCall("payload_received")
+      .withMemoryBufferParameter("payload", payload, sizeof(payload));
+  }
+
+  void nothing_should_happen()
+  {
+  }
+
+  void after_being_run()
+  {
+    tiny_comm_run(&self);
+  }
+
+#define given_that_payload_has_been_received(...)                         \
+  do {                                                                    \
+    should_receive_payload(__VA_ARGS__);                                  \
+    after_bytes_are_received(stx, crc_of(__VA_ARGS__), __VA_ARGS__, etx); \
+    and_ after_being_run();                                               \
+  } while(0)
 };
 
 TEST(tiny_comm, should_report_that_send_is_in_process_when_sending)
@@ -169,21 +223,21 @@ TEST(tiny_comm, should_send_the_next_byte_only_after_previous_send_completes)
   after_send_completes();
 }
 
-TEST(tiny_comm, should_send_an_empty_payload)
+TEST(tiny_comm, should_send_packets_with_an_empty_payload)
 {
   bytes_should_be_sent(stx, crc_of(), etx);
   when_payload_is_sent();
   and_all_sends_complete();
 }
 
-TEST(tiny_comm, should_send_a_non_empty_payload)
+TEST(tiny_comm, should_send_packets_with_a_non_empty_payload)
 {
   bytes_should_be_sent(stx, crc_of(11, 12, 13), 11, 12, 13, etx);
   when_payload_is_sent(11, 12, 13);
   and_all_sends_complete();
 }
 
-TEST(tiny_comm, should_send_a_full_size_payload)
+TEST(tiny_comm, should_send_packets_with_full_size_payloads)
 {
   bytes_should_be_sent(stx, crc_of(15, 14, 13, 12, 11), 15, 14, 13, 12, 11, etx);
   when_payload_is_sent(15, 14, 13, 12, 11);
@@ -204,4 +258,95 @@ TEST(tiny_comm, should_escape_control_characters_in_the_crc)
   and_all_sends_complete();
 }
 
-// ignore send complete events when not sending
+TEST(tiny_comm, should_reject_received_packets_with_an_invalid_crc)
+{
+  nothing_should_happen();
+  after_bytes_are_received(stx, crc_of(22, 33), 11, 22, 33, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_not_receive_packets_before_they_are_complete)
+{
+  nothing_should_happen();
+  after_bytes_are_received(stx, crc_of());
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_packets_with_no_payload)
+{
+  should_receive_payload();
+  after_bytes_are_received(stx, crc_of(), etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_packets_with_a_payload)
+{
+  should_receive_payload(11, 22, 33);
+  after_bytes_are_received(stx, crc_of(11, 22, 33), 11, 22, 33, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_packets_with_full_size_payloads)
+{
+  should_receive_payload(11, 22, 33, 44);
+  after_bytes_are_received(stx, crc_of(11, 22, 33, 44), 11, 22, 33, 44, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_not_publish_the_same_received_packet_twice)
+{
+  given_that_payload_has_been_received(11);
+  nothing_should_happen();
+  after_being_run();
+}
+
+TEST(tiny_comm, should_reject_packets_with_payloads_that_are_too_large)
+{
+  nothing_should_happen();
+  after_bytes_are_received(stx, crc_of(11, 22, 33, 44, 55), 11, 22, 33, 44, 55, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_packets_with_escaped_payloads)
+{
+  should_receive_payload(stx, etx, dle);
+  after_bytes_are_received(stx, crc_of(stx, etx, dle), dle, stx, dle, etx, dle, dle, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_packets_with_escaped_crcs)
+{
+  should_receive_payload(0x0E, 0x65);
+  after_bytes_are_received(stx, dle, stx, dle, etx, 0x0E, 0x65, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_multiple_packets)
+{
+  given_that_payload_has_been_received(11);
+  should_receive_payload(22);
+  after_bytes_are_received(stx, crc_of(22), 22, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_receive_a_packet_that_is_interrupted_by_another_packet)
+{
+  should_receive_payload(11);
+  after_bytes_are_received(stx, crc_of(22), 22, stx, crc_of(11), 11, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_drop_packets_received_before_the_previous_packet_has_been_published)
+{
+  should_receive_payload(11);
+  after_bytes_are_received(stx, crc_of(11), 11, etx, stx, crc_of(22), 22, etx);
+  and_ after_being_run();
+}
+
+TEST(tiny_comm, should_not_publish_the_same_packet_again_if_multiple_etxs_are_received)
+{
+  given_that_payload_has_been_received(11);
+  nothing_should_happen();
+  after_bytes_are_received(etx);
+  and_ after_being_run();
+}
