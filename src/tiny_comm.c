@@ -16,11 +16,10 @@ enum {
 };
 
 enum {
-  send_state_stx,
-  send_state_payload,
-  send_state_crc_msb,
-  send_state_crc_lsb,
-  send_state_etx
+  send_state_send_crc_msb,
+  send_state_send_crc_lsb,
+  send_state_send_payload,
+  send_state_sent_etx
 };
 
 typedef tiny_comm_t self_t;
@@ -58,40 +57,34 @@ static void send_complete(void* context, const void* args)
 
   // make sure send is in progress
 
-  if(self->send_state == send_state_stx) {
-    self->send_state = send_state_payload;
-  }
-
-  if(self->send_state == send_state_payload) {
-    if(self->send_buffer_offset < self->send_buffer_count) {
-      if(send_byte(self, self->send_buffer[self->send_buffer_offset])) {
-        self->send_buffer_offset++;
-      }
-      return;
-    }
-    else {
+  switch(self->send_state) {
+    case send_state_send_crc_msb:
       if(send_byte(self, self->send_crc >> 8)) {
-        self->send_state = send_state_crc_msb;
+        self->send_state = send_state_send_crc_lsb;
       }
-      return;
-    }
-  }
+      break;
 
-  if(self->send_state == send_state_crc_msb) {
-    if(send_byte(self, (uint8_t)self->send_crc)) {
-      self->send_state = send_state_crc_lsb;
-    }
-    return;
-  }
+    case send_state_send_crc_lsb:
+      if(send_byte(self, (uint8_t)self->send_crc)) {
+        self->send_state = send_state_send_payload;
+      }
+      break;
 
-  if(self->send_state == send_state_crc_lsb) {
-    self->send_state = send_state_etx;
-    send_control_character(self, etx);
-    return;
-  }
+    case send_state_send_payload:
+      if(self->send_buffer_offset < self->send_buffer_count) {
+        if(send_byte(self, self->send_buffer[self->send_buffer_offset])) {
+          self->send_buffer_offset++;
+        }
+      }
+      else {
+        self->send_state = send_state_sent_etx;
+        send_control_character(self, etx);
+      }
+      break;
 
-  if(self->send_state == send_state_etx) {
-    self->send_in_progress = false;
+    case send_state_sent_etx:
+      self->send_in_progress = false;
+      break;
   }
 }
 
@@ -110,7 +103,7 @@ static void send(i_tiny_comm_t* _self, const void* payload, uint8_t length)
     memcpy(self->send_buffer, payload, length);
     self->send_buffer_count = length;
     self->send_buffer_offset = 0;
-    self->send_state = send_state_stx;
+    self->send_state = send_state_send_crc_msb;
     self->send_crc = tiny_crc16_block(crc_seed, payload, length);
   }
   self->send_in_progress = true;

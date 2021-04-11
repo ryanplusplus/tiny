@@ -62,7 +62,7 @@ TEST_GROUP(tiny_comm)
     }
   }
 
-#define crc_of(...) crc_msb<__VA_ARGS__>(), crc_lsb<__VA_ARGS__>()
+#define crc_of(...) crc_msb(__VA_ARGS__), crc_lsb(__VA_ARGS__)
 
   template <uint8_t... bytes>
   static constexpr uint16_t crc()
@@ -82,14 +82,16 @@ TEST_GROUP(tiny_comm)
     return (crc << 8) ^ ((uint16_t)(byte << 12)) ^ ((uint16_t)(byte << 5)) ^ ((uint16_t)byte);
   }
 
+#define crc_msb(...) _crc_msb<__VA_ARGS__>()
   template <uint8_t... bytes>
-  static constexpr uint8_t crc_msb()
+  static constexpr uint8_t _crc_msb()
   {
     return crc<bytes...>() >> 8;
   }
 
+#define crc_lsb(...) _crc_lsb<__VA_ARGS__>()
   template <uint8_t... bytes>
-  static constexpr uint8_t crc_lsb()
+  static constexpr uint8_t _crc_lsb()
   {
     return crc<bytes...>() & 0xFF;
   }
@@ -160,10 +162,10 @@ TEST(tiny_comm, should_send_the_next_byte_only_after_previous_send_completes)
   byte_should_be_sent(stx);
   when_payload_is_sent(11, 12, 13);
 
-  byte_should_be_sent(11);
+  byte_should_be_sent(crc_msb(11, 12, 13));
   after_send_completes();
 
-  byte_should_be_sent(12);
+  byte_should_be_sent(crc_lsb(11, 12, 13));
   after_send_completes();
 }
 
@@ -176,28 +178,28 @@ TEST(tiny_comm, should_send_an_empty_payload)
 
 TEST(tiny_comm, should_send_a_non_empty_payload)
 {
-  bytes_should_be_sent(stx, 11, 12, 13, crc_of(11, 12, 13), etx);
+  bytes_should_be_sent(stx, crc_of(11, 12, 13), 11, 12, 13, etx);
   when_payload_is_sent(11, 12, 13);
   and_all_sends_complete();
 }
 
 TEST(tiny_comm, should_send_a_full_size_payload)
 {
-  bytes_should_be_sent(stx, 15, 14, 13, 12, 11, crc_of(15, 14, 13, 12, 11), etx);
+  bytes_should_be_sent(stx, crc_of(15, 14, 13, 12, 11), 15, 14, 13, 12, 11, etx);
   when_payload_is_sent(15, 14, 13, 12, 11);
   and_all_sends_complete();
 }
 
 TEST(tiny_comm, should_escape_control_characters_in_the_send_payload)
 {
-  bytes_should_be_sent(stx, dle, stx, dle, etx, dle, dle, crc_of(stx, etx, dle), etx);
+  bytes_should_be_sent(stx, crc_of(stx, etx, dle), dle, stx, dle, etx, dle, dle, etx);
   when_payload_is_sent(stx, etx, dle);
   and_all_sends_complete();
 }
 
 TEST(tiny_comm, should_escape_control_characters_in_the_crc)
 {
-  bytes_should_be_sent(stx, 0x0E, 0x65, dle, stx, dle, etx, etx);
+  bytes_should_be_sent(stx, dle, stx, dle, etx, 0x0E, 0x65, etx);
   when_payload_is_sent(0x0E, 0x65);
   and_all_sends_complete();
 }
