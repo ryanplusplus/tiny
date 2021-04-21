@@ -20,16 +20,23 @@ typedef struct {
 /*!
  * Initializes an event subscription.
  */
-void tiny_event_subscription_init(
+inline void tiny_event_subscription_init(
   tiny_event_subscription_t* self,
   void* context,
-  tiny_event_subscription_callback_t callback);
+  tiny_event_subscription_callback_t callback)
+{
+  self->callback = callback;
+  self->context = context;
+}
 
 /*!
  * Publishes to the event subscriber.
  */
-void tiny_event_subscription_publish(
+inline void tiny_event_subscription_publish(
   tiny_event_subscription_t* self,
-  const void* args);
+  const void* args)
+{
+  self->callback(self->context, args);
+}
 
 #endif

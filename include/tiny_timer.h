@@ -73,22 +73,32 @@ void tiny_timer_start_periodic(
 /*!
  * Stops a timer.
  */
-void tiny_timer_stop(
+inline void tiny_timer_stop(
   tiny_timer_group_t* self,
-  tiny_timer_t* timer);
+  tiny_timer_t* timer)
+{
+  tiny_list_remove(&self->timers, &timer->node);
+}
 
 /*!
  * Returns true if the specified timer is running and false otherwise.
  */
-bool tiny_timer_is_running(
+inline bool tiny_timer_is_running(
   tiny_timer_group_t* self,
-  tiny_timer_t* timer);
+  tiny_timer_t* timer)
+{
+  return tiny_list_contains(&self->timers, &timer->node);
+}
 
 /*!
  * Returns the remaining ticks for a running timer.
  */
-tiny_timer_ticks_t tiny_timer_remaining_ticks(
+inline tiny_timer_ticks_t tiny_timer_remaining_ticks(
   tiny_timer_group_t* self,
-  tiny_timer_t* timer);
+  tiny_timer_t* timer)
+{
+  (void)self;
+  return timer->remaining_ticks;
+}
 
 #endif

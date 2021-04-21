@@ -14,6 +14,7 @@
 #define tiny_fsm_h
 
 #include <stdint.h>
+#include <stddef.h>
 
 enum {
   tiny_fsm_signal_entry,
@@ -37,17 +38,29 @@ typedef struct tiny_fsm_t {
  * Initializes an FSM with the specified initial state. Sends the entry signal to the
  * initial state.
  */
-void tiny_fsm_init(tiny_fsm_t* self, tiny_fsm_state_t initial);
+inline void tiny_fsm_init(tiny_fsm_t* self, tiny_fsm_state_t initial)
+{
+  self->current = initial;
+  self->current(self, tiny_fsm_signal_entry, NULL);
+}
 
 /*!
  * Sends a signal and optional signal data to the current state.
  */
-void tiny_fsm_send_signal(tiny_fsm_t* self, tiny_fsm_signal_t signal, const void* data);
+inline void tiny_fsm_send_signal(tiny_fsm_t* self, tiny_fsm_signal_t signal, const void* data)
+{
+  self->current(self, signal, data);
+}
 
 /*!
  * Transitions the FSM to the target state. Sends exit to the current state, changes
  * state, then sends entry to the target state.
  */
-void tiny_fsm_transition(tiny_fsm_t* self, tiny_fsm_state_t target);
+inline void tiny_fsm_transition(tiny_fsm_t* self, tiny_fsm_state_t target)
+{
+  self->current(self, tiny_fsm_signal_exit, NULL);
+  self->current = target;
+  self->current(self, tiny_fsm_signal_entry, NULL);
+}
 
 #endif

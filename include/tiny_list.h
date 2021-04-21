@@ -37,12 +37,19 @@ typedef struct
 /*!
  * Initializes the list.
  */
-void tiny_list_init(tiny_list_t* self);
+inline void tiny_list_init(tiny_list_t* self)
+{
+  self->head.next = &self->head;
+}
 
 /*!
  * Adds the node to the front of the list.
  */
-void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node);
+inline void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node)
+{
+  node->next = self->head.next;
+  self->head.next = node;
+}
 
 /*!
  * Adds the node to the back of the list.
@@ -52,7 +59,12 @@ void tiny_list_push_back(tiny_list_t* self, tiny_list_node_t* node);
 /*!
  * Removes the node from the front of the list. Returns the node.
  */
-tiny_list_node_t* tiny_list_pop_front(tiny_list_t* self);
+inline tiny_list_node_t* tiny_list_pop_front(tiny_list_t* self)
+{
+  tiny_list_node_t* popped = self->head.next;
+  self->head.next = self->head.next->next;
+  return popped;
+}
 
 /*!
  * Removes the node at the back of the list. Returns the node.
@@ -82,12 +94,25 @@ uint16_t tiny_list_index_of(tiny_list_t* self, tiny_list_node_t* node);
 /*!
  * Initialize an iterator for the provided list.
  */
-void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list);
+inline void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list)
+{
+  self->current = list->head.next;
+}
 
 /*!
  * Return a pointer to the next node or NULL if there are no more nodes.
  */
-tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self, tiny_list_t* list);
+inline tiny_list_node_t* tiny_list_iterator_next(tiny_list_iterator_t* self, tiny_list_t* list)
+{
+  if(self->current == &list->head) {
+    return NULL;
+  }
+  else {
+    tiny_list_node_t* item = self->current;
+    self->current = self->current->next;
+    return item;
+  }
+}
 
 #define tiny_list_for_each(_list, _type, _item, ...)                \
   do {                                                              \

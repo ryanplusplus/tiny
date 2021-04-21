@@ -111,18 +111,8 @@ void tiny_timer_start_periodic(
   start_timer(self, true, timer, ticks, callback, context);
 }
 
-void tiny_timer_stop(tiny_timer_group_t* self, tiny_timer_t* timer)
-{
-  tiny_list_remove(&self->timers, &timer->node);
-}
+extern inline void tiny_timer_stop(tiny_timer_group_t* self, tiny_timer_t* timer);
 
-bool tiny_timer_is_running(tiny_timer_group_t* self, tiny_timer_t* timer)
-{
-  return tiny_list_contains(&self->timers, &timer->node);
-}
+extern inline bool tiny_timer_is_running(tiny_timer_group_t* self, tiny_timer_t* timer);
 
-tiny_timer_ticks_t tiny_timer_remaining_ticks(tiny_timer_group_t* self, tiny_timer_t* timer)
-{
-  (void)self;
-  return timer->remaining_ticks;
-}
+extern inline tiny_timer_ticks_t tiny_timer_remaining_ticks(tiny_timer_group_t* self, tiny_timer_t* timer);

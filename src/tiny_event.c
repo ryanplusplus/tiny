@@ -19,9 +19,7 @@ static void unsubscribe(i_tiny_event_t* _self, tiny_event_subscription_t* subscr
   tiny_list_remove(&self->subscribers, &subscription->node);
 }
 
-static const i_tiny_event_api_t api = {
-  subscribe, unsubscribe
-};
+static const i_tiny_event_api_t api = { subscribe, unsubscribe };
 
 void tiny_event_init(tiny_event_t* self)
 {
