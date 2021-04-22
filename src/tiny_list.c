@@ -7,29 +7,6 @@
 #include "tiny_list.h"
 #include "tiny_utils.h"
 
-typedef struct {
-  tiny_list_node_t* previous;
-  tiny_list_node_t* current;
-  uint16_t index;
-} info_t;
-
-static void find_node_info(tiny_list_t* self, tiny_list_node_t* target, info_t* info)
-{
-  info->current = &self->head;
-  info->index = 0;
-
-  tiny_list_for_each(self, tiny_list_node_t, node, {
-    info->previous = info->current;
-    info->current = node;
-
-    if(node == target) {
-      break;
-    }
-
-    info->index++;
-  });
-}
-
 extern inline void tiny_list_init(tiny_list_t* self);
 
 uint16_t tiny_list_count(tiny_list_t* self)
@@ -49,9 +26,13 @@ extern inline void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* nod
 
 void tiny_list_push_back(tiny_list_t* self, tiny_list_node_t* node)
 {
-  info_t info;
-  find_node_info(self, &self->head, &info);
-  info.current->next = node;
+  tiny_list_node_t* current = self->head.next;
+
+  while(current->next != &self->head) {
+    current = current->next;
+  }
+
+  current->next = node;
   node->next = &self->head;
 }
 
@@ -59,34 +40,60 @@ extern inline tiny_list_node_t* tiny_list_pop_front(tiny_list_t* self);
 
 tiny_list_node_t* tiny_list_pop_back(tiny_list_t* self)
 {
-  info_t info;
-  find_node_info(self, &self->head, &info);
-  info.previous->next = info.current->next;
-  return info.current;
+  tiny_list_node_t* previous = self->head.next;
+  tiny_list_node_t* current = self->head.next;
+
+  while(current->next != &self->head) {
+    previous = current;
+    current = current->next;
+  }
+
+  previous->next = &self->head;
+  return current;
 }
 
 void tiny_list_remove(tiny_list_t* self, tiny_list_node_t* node)
 {
-  info_t info;
-  find_node_info(self, node, &info);
+  tiny_list_node_t* previous = &self->head;
+  tiny_list_node_t* current = self->head.next;
 
-  if(info.current == node) {
-    info.previous->next = node->next;
+  while(current != &self->head) {
+    if(current == node) {
+      previous->next = current->next;
+      return;
+    }
+
+    previous = current;
+    current = current->next;
   }
 }
 
 bool tiny_list_contains(tiny_list_t* self, tiny_list_node_t* node)
 {
-  info_t info;
-  find_node_info(self, node, &info);
-  return info.current == node;
+  tiny_list_node_t* current = self->head.next;
+
+  while(current != &self->head) {
+    if(current == node) {
+      return true;
+    }
+
+    current = current->next;
+  }
+
+  return false;
 }
 
 uint16_t tiny_list_index_of(tiny_list_t* self, tiny_list_node_t* node)
 {
-  info_t info;
-  find_node_info(self, node, &info);
-  return info.index;
+  tiny_list_node_t* current = self->head.next;
+  uint16_t index = 0;
+
+  while(current != node) {
+    index++;
+    current = current->next;
+  }
+
+  return index;
 }
 
 extern inline void tiny_list_iterator_init(tiny_list_iterator_t* self, tiny_list_t* list);
