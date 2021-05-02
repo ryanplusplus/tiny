@@ -20,4 +20,10 @@
 #define container_of(_container_type, _field_name, _field) \
   (_container_type*)((uint8_t*)_field - offsetof(_container_type, _field_name))
 
+#define _concat(_a, _b) _a##_b
+#define concat(_a, _b) _concat(_a, _b)
+
+#define static_assert(_condition) \
+  typedef int concat(static_assert_, __LINE__)[_condition ? 1 : -1]
+
 #endif
