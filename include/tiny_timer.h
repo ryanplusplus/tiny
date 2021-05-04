@@ -14,7 +14,7 @@
 #include "i_tiny_time_source.h"
 #include "tiny_list.h"
 
-typedef uint16_t tiny_timer_ticks_t;
+typedef uint32_t tiny_timer_ticks_t;
 
 struct tiny_timer_group_t;
 
