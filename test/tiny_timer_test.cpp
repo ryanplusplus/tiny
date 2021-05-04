@@ -295,7 +295,7 @@ TEST(tiny_timer, should_give_the_time_until_the_next_timer_is_ready)
 
   after(2);
   should_run_and_indicate_that_the_next_timer_will_be_ready_in(0);
-  should_run_and_indicate_that_the_next_timer_will_be_ready_in(0xFFFF);
+  should_run_and_indicate_that_the_next_timer_will_be_ready_in(0xFFFFFFFF);
 }
 
 TEST(tiny_timer, should_account_for_restarted_timers_when_giving_time_until_next_ready)

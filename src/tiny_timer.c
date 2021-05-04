@@ -47,7 +47,7 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
   tiny_time_source_ticks_t delta = current_ticks - self->last_ticks;
   self->last_ticks = current_ticks;
 
-  self->next_ready = UINT16_MAX;
+  self->next_ready = (tiny_timer_ticks_t)-1;
   bool timer_ready = false;
 
   tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
