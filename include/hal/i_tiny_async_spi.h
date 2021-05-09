@@ -26,8 +26,8 @@ typedef struct i_tiny_async_spi_api_t {
    */
   void (*transfer)(
     i_tiny_async_spi_t* self,
-    const uint8_t* write_buffer,
-    uint8_t* read_buffer,
+    const void* write_buffer,
+    void* read_buffer,
     uint16_t buffer_size,
     tiny_async_spi_callback_t callback,
     void* context);

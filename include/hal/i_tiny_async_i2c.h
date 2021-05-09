@@ -30,7 +30,7 @@ typedef struct i_tiny_async_i2c_api_t {
     i_tiny_async_i2c_t* self,
     uint8_t address,
     bool prepare_for_restart,
-    const uint8_t* buffer,
+    const void* buffer,
     uint16_t buffer_size,
     tiny_async_i2c_callback_t callback,
     void* context);
@@ -47,7 +47,7 @@ typedef struct i_tiny_async_i2c_api_t {
     i_tiny_async_i2c_t* self,
     uint8_t address,
     bool prepare_for_restart,
-    uint8_t* buffer,
+    void* buffer,
     uint16_t buffer_size,
     tiny_async_i2c_callback_t callback,
     void* context);
