@@ -8,6 +8,9 @@
 
 #include <stddef.h>
 
+#define min(x, y) (x) < (y) ? (x) : (y);
+#define max(x, y) (x) > (y) ? (x) : (y);
+
 #define reinterpret(_name, _cast_me, _type) \
   _type _name = (_type)_cast_me
 

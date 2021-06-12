@@ -25,6 +25,8 @@ void tiny_ring_buffer_init(
   tiny_ring_buffer_clear(self);
 }
 
+extern inline unsigned tiny_ring_buffer_capacity(tiny_ring_buffer_t* self);
+
 unsigned tiny_ring_buffer_count(tiny_ring_buffer_t* self)
 {
   if(self->full) {

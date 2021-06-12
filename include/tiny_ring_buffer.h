@@ -18,7 +18,7 @@
 typedef struct {
   void* buffer;
   unsigned element_size;
-  unsigned head;
+  volatile unsigned head;
   volatile unsigned tail;
   unsigned capacity;
   bool full;
@@ -32,6 +32,14 @@ void tiny_ring_buffer_init(
   void* buffer,
   unsigned element_size,
   unsigned element_count);
+
+/*!
+ * The number of elements the ring buffer can hold.
+ */
+inline unsigned tiny_ring_buffer_capacity(tiny_ring_buffer_t* self)
+{
+  return self->capacity;
+}
 
 /*!
  * The number of elements currently stored in the ring buffer.
