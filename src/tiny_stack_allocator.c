@@ -12,7 +12,8 @@
   {                                                                                   \
     uint64_t data[_size / sizeof(uint64_t)];                                          \
     callback(context, data);                                                          \
-  }
+  }                                                                                   \
+  typedef int dummy##_size
 
 define_worker(8);
 define_worker(16);
