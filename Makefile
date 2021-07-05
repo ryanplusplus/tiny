@@ -8,10 +8,11 @@ INC_DIRS ?= \
 SRC_DIRS ?= \
   src \
   test \
+  test/double \
 
 SRC_FILES ?= \
 
-SRCS := $(SRC_FILES) $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
+SRCS := $(SRC_FILES) $(shell find $(SRC_DIRS) -maxdepth 1 -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
