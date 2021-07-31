@@ -29,11 +29,11 @@ typedef struct i_tiny_async_spi_api_t {
     const void* write_buffer,
     void* read_buffer,
     uint16_t buffer_size,
-    tiny_async_spi_callback_t callback,
-    void* context);
+    void* context,
+    tiny_async_spi_callback_t callback);
 } i_tiny_async_spi_api_t;
 
-#define tiny_async_spi_transfer(self, write_buffer, read_buffer, buffer_size, callback, context) \
-  (self)->api->transfer((self), (write_buffer), (read_buffer), (buffer_size), (callback), (context))
+#define tiny_async_spi_transfer(self, write_buffer, read_buffer, buffer_size, context, callback) \
+  (self)->api->transfer((self), (write_buffer), (read_buffer), (buffer_size), (context), (callback))
 
 #endif

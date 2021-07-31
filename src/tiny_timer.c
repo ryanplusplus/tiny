@@ -29,8 +29,8 @@ static void start_timer(
   bool periodic,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
-  tiny_timer_callback_t callback,
-  void* context)
+  void* context,
+  tiny_timer_callback_t callback)
 {
   timer->periodic = periodic;
   timer->callback = callback;
@@ -95,20 +95,20 @@ void tiny_timer_start(
   tiny_timer_group_t* self,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
-  tiny_timer_callback_t callback,
-  void* context)
+  void* context,
+  tiny_timer_callback_t callback)
 {
-  start_timer(self, false, timer, ticks, callback, context);
+  start_timer(self, false, timer, ticks, context, callback);
 }
 
 void tiny_timer_start_periodic(
   tiny_timer_group_t* self,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
-  tiny_timer_callback_t callback,
-  void* context)
+  void* context,
+  tiny_timer_callback_t callback)
 {
-  start_timer(self, true, timer, ticks, callback, context);
+  start_timer(self, true, timer, ticks, context, callback);
 }
 
 extern inline void tiny_timer_stop(tiny_timer_group_t* self, tiny_timer_t* timer);

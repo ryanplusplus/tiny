@@ -32,8 +32,8 @@ typedef struct i_tiny_async_i2c_api_t {
     bool prepare_for_restart,
     const void* buffer,
     uint16_t buffer_size,
-    tiny_async_i2c_callback_t callback,
-    void* context);
+    void* context,
+    tiny_async_i2c_callback_t callback);
 
   /*!
    * Read bytes into a buffer from the specified address. The stop
@@ -49,8 +49,8 @@ typedef struct i_tiny_async_i2c_api_t {
     bool prepare_for_restart,
     void* buffer,
     uint16_t buffer_size,
-    tiny_async_i2c_callback_t callback,
-    void* context);
+    void* context,
+    tiny_async_i2c_callback_t callback);
 
   /*!
    * Resets the bus.
@@ -58,11 +58,11 @@ typedef struct i_tiny_async_i2c_api_t {
   void (*reset)(i_tiny_async_i2c_t* self);
 } i_tiny_async_i2c_api_t;
 
-#define tiny_async_i2c_write(self, address, prepare_for_restart, buffer, buffer_size, callback, context) \
-  (self)->api->write((self), (address), (prepare_for_restart), (buffer), (buffer_size), (callback), (context))
+#define tiny_async_i2c_write(self, address, prepare_for_restart, buffer, buffer_size, context, callback) \
+  (self)->api->write((self), (address), (prepare_for_restart), (buffer), (buffer_size), (context), (callback))
 
-#define tiny_async_i2c_read(self, address, prepare_for_restart, buffer, buffer_size, callback, context) \
-  (self)->api->read((self), (address), (prepare_for_restart), (buffer), (buffer_size), (callback), (context))
+#define tiny_async_i2c_read(self, address, prepare_for_restart, buffer, buffer_size, context, callback) \
+  (self)->api->read((self), (address), (prepare_for_restart), (buffer), (buffer_size), (context), (callback))
 
 #define tiny_async_i2c_reset(self) \
   (self)->api->reset((self))

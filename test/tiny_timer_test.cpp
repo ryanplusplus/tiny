@@ -45,13 +45,13 @@ TEST_GROUP(tiny_timer)
   static void callback_with_restart(tiny_timer_group_t * group, void* context)
   {
     callback(group, context);
-    tiny_timer_start(group, (tiny_timer_t*)context, restart_ticks, callback_with_restart, context);
+    tiny_timer_start(group, (tiny_timer_t*)context, restart_ticks, context, callback_with_restart);
   }
 
   void after_timer_with_restart_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
     restart_ticks = ticks;
-    tiny_timer_start(&group, timer, ticks, callback_with_restart, timer);
+    tiny_timer_start(&group, timer, ticks, timer, callback_with_restart);
   }
 
   void given_that_timer_with_restart_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
@@ -67,24 +67,24 @@ TEST_GROUP(tiny_timer)
 
   void given_that_periodic_timer_with_stop_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
-    tiny_timer_start_periodic(&group, timer, ticks, callback_with_stop, timer);
+    tiny_timer_start_periodic(&group, timer, ticks, timer, callback_with_stop);
   }
 
   static void callback_with_periodic_restart(tiny_timer_group_t * group, void* context)
   {
     callback(group, context);
-    tiny_timer_start_periodic(group, (tiny_timer_t*)context, restart_ticks, callback, context);
+    tiny_timer_start_periodic(group, (tiny_timer_t*)context, restart_ticks, context, callback);
   }
 
   void given_that_periodic_timer_with_restart_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks, tiny_timer_ticks_t _restart_ticks)
   {
     restart_ticks = _restart_ticks;
-    tiny_timer_start_periodic(&group, timer, ticks, callback_with_periodic_restart, timer);
+    tiny_timer_start_periodic(&group, timer, ticks, timer, callback_with_periodic_restart);
   }
 
   void after_timer_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
-    tiny_timer_start(&group, timer, ticks, callback, timer);
+    tiny_timer_start(&group, timer, ticks, timer, callback);
   }
 
   void given_that_timer_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
@@ -94,7 +94,7 @@ TEST_GROUP(tiny_timer)
 
   void after_periodic_timer_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
   {
-    tiny_timer_start_periodic(&group, timer, ticks, callback, timer);
+    tiny_timer_start_periodic(&group, timer, ticks, timer, callback);
   }
 
   void given_that_periodic_timer_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)

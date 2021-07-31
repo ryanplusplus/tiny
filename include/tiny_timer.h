@@ -57,8 +57,8 @@ void tiny_timer_start(
   tiny_timer_group_t* self,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
-  tiny_timer_callback_t callback,
-  void* context);
+  void* context,
+  tiny_timer_callback_t callback);
 
 /*!
  * Starts a periodic timer.
@@ -67,8 +67,8 @@ void tiny_timer_start_periodic(
   tiny_timer_group_t* self,
   tiny_timer_t* timer,
   tiny_timer_ticks_t ticks,
-  tiny_timer_callback_t callback,
-  void* context);
+  void* context,
+  tiny_timer_callback_t callback);
 
 /*!
  * Stops a timer.
