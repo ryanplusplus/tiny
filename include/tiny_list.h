@@ -17,9 +17,9 @@
 #ifndef tiny_list_h
 #define tiny_list_h
 
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "tiny_utils.h"
 
 typedef struct tiny_list_node_t {
   struct tiny_list_node_t* next;
