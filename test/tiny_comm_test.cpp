@@ -6,6 +6,7 @@
 extern "C" {
 #include "tiny_comm.h"
 #include "tiny_crc16.h"
+#include "tiny_utils.h"
 }
 
 #include "CppUTest/TestHarness.h"
