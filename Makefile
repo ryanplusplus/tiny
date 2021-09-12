@@ -19,9 +19,9 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS += $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined -fsanitize-undefined-trap-on-error
+SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined
 
-CFLAGS +=
+CFLAGS += -std=c99 -pedantic
 CPPFLAGS += $(SANITIZE_FLAGS) -fno-omit-frame-pointer
 CPPFLAGS += $(INC_FLAGS) -MMD -MP -g -Wall -Wextra -Wcast-qual -Werror
 CXXFLAGS +=
