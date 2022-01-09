@@ -21,8 +21,7 @@ typedef struct i_tiny_async_spi_api_t {
    * Performs a simultaneous write/read. If not reading or writing, the corresponding
    * buffer can be left NULL.
    *
-   * Clients should assume that the callback is raised
-   * from an interrupt.
+   * Clients should assume that the callback is raised from an interrupt.
    */
   void (*transfer)(
     i_tiny_async_spi_t* self,
