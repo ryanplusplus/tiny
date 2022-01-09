@@ -44,13 +44,16 @@ typedef struct i_tiny_buffered_uart_api_t {
   void (*run)(i_tiny_buffered_uart_t* self);
 } i_tiny_buffered_uart_api_t;
 
-#define tiny_buffered_uart_send(self, byte) \
-  (self)->api->send((self), (byte))
+#define tiny_buffered_uart_send(self, buffer, buffer_size) \
+  (self)->api->send((self), (buffer), (buffer_size))
 
 #define tiny_buffered_uart_on_send_complete(self) \
   (self)->api->on_send_complete((self))
 
 #define tiny_buffered_uart_on_receive(self) \
   (self)->api->on_receive((self))
+
+#define tiny_buffered_uart_run(self) \
+  (self)->api->run((self))
 
 #endif
