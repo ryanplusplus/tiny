@@ -3,7 +3,7 @@ __lib_tiny_path := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 LIBS := tiny $(LIBS)
 
 INC_DIRS += \
-  lib/tiny/include \
+  $(__lib_tiny_path)include \
 
 tiny_ASFLAGS := $(ASFLAGS)
 tiny_CPPFLAGS := $(CPPFLAGS)
