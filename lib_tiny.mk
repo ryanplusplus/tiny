@@ -1,4 +1,4 @@
-__lib_tiny_path := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+__lib_tiny_path := $(subst $(shell pwd)/,,$(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 
 LIBS := tiny $(LIBS)
 
