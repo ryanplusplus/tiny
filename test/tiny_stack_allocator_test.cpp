@@ -4,6 +4,7 @@
  */
 
 extern "C" {
+#include <string.h>
 #include "tiny_stack_allocator.h"
 }
 
