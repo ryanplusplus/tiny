@@ -8,14 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest, macos-11, macos-latest]
 
     steps:
     - name: Install CppUTest
-      run: sudo apt install cpputest
+      uses: lyricwulf/abc@v1
+      with:
+        all: cpputest
+
+    - uses: SimenB/github-actions-cpu-cores@v1
 
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
 
-    - run: make -j$(nproc)
+    - run: make -j${{ steps.cpu-cores.outputs.count }}
