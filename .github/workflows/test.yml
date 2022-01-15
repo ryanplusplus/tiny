@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Install CppUTest
+      run: sudo apt install cpputest
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - run: make -j$(nproc)
