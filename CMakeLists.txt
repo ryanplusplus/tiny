@@ -17,7 +17,6 @@ target_sources(tiny INTERFACE
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_timer.c
 )
 
-target_include_directories(tiny INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include)
-
-# Pull in pico libraries that we need
-target_link_libraries(tiny INTERFACE)
+target_include_directories(tiny INTERFACE
+  ${CMAKE_CURRENT_LIST_DIR}/include
+)
