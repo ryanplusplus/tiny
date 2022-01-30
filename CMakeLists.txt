@@ -6,10 +6,10 @@ project(tiny
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
+
+	if(BUILD_TESTING)
+		add_subdirectory(test)
+	endif()
 endif()
 
 add_subdirectory(src)
-
-if(BUILD_TESTING)
-	add_subdirectory(test)
-endif()
