@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "test",
+      "displayName": "Test Config",
+      "description": "Test build using Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/test",
+      "cacheVariables": {},
+      "environment": {},
+      "vendor": {}
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "test",
+      "configurePreset": "test"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test",
+      "configurePreset": "test",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    }
+  ],
+  "vendor": {}
+}
