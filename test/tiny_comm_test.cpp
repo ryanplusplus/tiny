@@ -86,9 +86,11 @@ TEST_GROUP(tiny_comm)
   template <uint8_t... bytes>
   static constexpr uint16_t crc()
   {
+    uint8_t stuff[] = { bytes..., 0 };
+
     uint16_t crc = 0xFFFF;
-    for(uint8_t byte : (uint8_t[]){ bytes... }) {
-      crc = calculate_crc(crc, byte);
+    for(size_t i = 0; i < sizeof(stuff) - 1; i++) {
+      crc = calculate_crc(crc, stuff[i]);
     }
     return crc;
   }
@@ -119,8 +121,8 @@ TEST_GROUP(tiny_comm)
   template <uint8_t... bytes>
   void _when_payload_is_sent()
   {
-    uint8_t payload[] = { bytes... };
-    tiny_comm_send(&self.interface, payload, sizeof(payload));
+    uint8_t payload[] = { bytes..., 0 };
+    tiny_comm_send(&self.interface, payload, sizeof(payload) - 1);
   }
 
 #define given_that_payload_has_been_sent(...) _given_that_payload_has_been_sent<__VA_ARGS__>()
@@ -169,11 +171,11 @@ TEST_GROUP(tiny_comm)
   template <uint8_t... bytes>
   void _should_receive_payload()
   {
-    static const uint8_t payload[] = { bytes... };
+    static const uint8_t payload[] = { bytes..., 0 };
 
     mock()
       .expectOneCall("payload_received")
-      .withMemoryBufferParameter("payload", payload, sizeof(payload));
+      .withMemoryBufferParameter("payload", payload, sizeof(payload) - 1);
   }
 
   void nothing_should_happen()
