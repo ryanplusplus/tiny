@@ -1,14 +1,9 @@
 __lib_tiny_path := $(call current_path)
 
-LIBS := tiny $(LIBS)
+$(call create_lib_with_defaults,tiny)
 
 INC_DIRS += \
   $(__lib_tiny_path)include \
-
-tiny_ASFLAGS := $(ASFLAGS)
-tiny_CPPFLAGS := $(CPPFLAGS)
-tiny_CFLAGS := $(CFLAGS)
-tiny_CXXFLAGS := $(CXXFLAGS)
 
 tiny_INC_DIRS := \
   $(__lib_tiny_path)include \
