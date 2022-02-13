@@ -7,20 +7,20 @@
 #include "CppUTestExt/MockSupport.h"
 #include "tiny_utils.h"
 
-void send(i_tiny_uart_t* _self, uint8_t byte)
+static void send(i_tiny_uart_t* _self, uint8_t byte)
 {
   reinterpret(self, _self, tiny_uart_double_t*);
   self->sending = true;
   mock().actualCall("send").onObject(self).withParameter("byte", byte);
 }
 
-i_tiny_event_t* on_send_complete(i_tiny_uart_t* _self)
+static i_tiny_event_t* on_send_complete(i_tiny_uart_t* _self)
 {
   reinterpret(self, _self, tiny_uart_double_t*);
   return &self->send_complete.interface;
 }
 
-i_tiny_event_t* on_receive(i_tiny_uart_t* _self)
+static i_tiny_event_t* on_receive(i_tiny_uart_t* _self)
 {
   reinterpret(self, _self, tiny_uart_double_t*);
   return &self->receive.interface;
