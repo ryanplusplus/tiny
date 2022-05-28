@@ -12,6 +12,7 @@ extern "C" {
 #include "double/tiny_time_source_double.h"
 
 static tiny_timer_ticks_t restart_ticks;
+static tiny_timer_group_t* static_group;
 
 TEST_GROUP(tiny_timer)
 {
@@ -32,20 +33,21 @@ TEST_GROUP(tiny_timer)
     tiny_time_source_double_set_ticks(&time_source, 1234);
 
     tiny_timer_group_init(&group, &time_source.interface);
+
+    static_group = &group;
   }
 
-  static void callback(tiny_timer_group_t * group, void* context)
+  static void callback(void* context)
   {
     mock()
       .actualCall("callback")
-      .withParameter("group", group)
       .withParameter("context", context);
   }
 
-  static void callback_with_restart(tiny_timer_group_t * group, void* context)
+  static void callback_with_restart(void* context)
   {
-    callback(group, context);
-    tiny_timer_start(group, (tiny_timer_t*)context, restart_ticks, context, callback_with_restart);
+    callback(context);
+    tiny_timer_start(static_group, (tiny_timer_t*)context, restart_ticks, context, callback_with_restart);
   }
 
   void after_timer_with_restart_is_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
@@ -59,10 +61,10 @@ TEST_GROUP(tiny_timer)
     after_timer_with_restart_is_started(timer, ticks);
   }
 
-  static void callback_with_stop(tiny_timer_group_t * group, void* context)
+  static void callback_with_stop(void* context)
   {
-    callback(group, context);
-    tiny_timer_stop(group, (tiny_timer_t*)context);
+    callback(context);
+    tiny_timer_stop(static_group, (tiny_timer_t*)context);
   }
 
   void given_that_periodic_timer_with_stop_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
@@ -70,10 +72,10 @@ TEST_GROUP(tiny_timer)
     tiny_timer_start_periodic(&group, timer, ticks, timer, callback_with_stop);
   }
 
-  static void callback_with_periodic_restart(tiny_timer_group_t * group, void* context)
+  static void callback_with_periodic_restart(void* context)
   {
-    callback(group, context);
-    tiny_timer_start_periodic(group, (tiny_timer_t*)context, restart_ticks, context, callback);
+    callback(context);
+    tiny_timer_start_periodic(static_group, (tiny_timer_t*)context, restart_ticks, context, callback);
   }
 
   void given_that_periodic_timer_with_restart_has_been_started(tiny_timer_t * timer, tiny_timer_ticks_t ticks, tiny_timer_ticks_t _restart_ticks)
@@ -116,7 +118,6 @@ TEST_GROUP(tiny_timer)
   {
     mock()
       .expectOneCall("callback")
-      .withParameter("group", &group)
       .withParameter("context", timer);
   }
 

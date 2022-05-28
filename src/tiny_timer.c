@@ -76,7 +76,7 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
           tiny_list_remove(&self->timers, &timer->node);
         }
 
-        timer->callback(self, timer->context);
+        timer->callback(timer->context);
 
         if(timer->periodic && tiny_timer_is_running(self, timer)) {
           timer->remaining_ticks = timer->start_ticks;

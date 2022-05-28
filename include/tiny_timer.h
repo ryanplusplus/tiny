@@ -18,7 +18,7 @@ typedef uint32_t tiny_timer_ticks_t;
 
 struct tiny_timer_group_t;
 
-typedef void (*tiny_timer_callback_t)(struct tiny_timer_group_t* group, void* context);
+typedef void (*tiny_timer_callback_t)(void* context);
 
 typedef struct {
   tiny_list_node_t node;
