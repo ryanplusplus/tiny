@@ -19,7 +19,7 @@ typedef void (*tiny_stack_allocator_callback_t)(void* context, void* data);
  */
 void tiny_stack_allocator_allocate_aligned(
   size_t size,
-  tiny_stack_allocator_callback_t callback,
-  void* context);
+  void* context,
+  tiny_stack_allocator_callback_t callback);
 
 #endif

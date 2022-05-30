@@ -39,8 +39,8 @@ static const worker_t workers[] = {
 
 void tiny_stack_allocator_allocate_aligned(
   size_t size,
-  tiny_stack_allocator_callback_t callback,
-  void* context)
+  void* context,
+  tiny_stack_allocator_callback_t callback)
 {
   for(uint8_t i = 0; i < element_count(workers); i++) {
     if(size <= workers[i].size) {

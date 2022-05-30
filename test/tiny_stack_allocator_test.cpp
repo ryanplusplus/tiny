@@ -30,6 +30,6 @@ TEST(tiny_stack_allocator, should_allocate_aligned_memory_of_the_requested_size)
 {
   for(size_t size = 1; size <= largest_supported_size; size++) {
     current_size = size;
-    tiny_stack_allocator_allocate_aligned(size, callback, (void*)(0x1234));
+    tiny_stack_allocator_allocate_aligned(size, (void*)(0x1234), callback);
   }
 }

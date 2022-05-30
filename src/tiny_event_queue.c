@@ -148,8 +148,8 @@ static void process_event_with_data(tiny_event_queue_t* self)
 
   tiny_stack_allocator_allocate_aligned(
     context.data_size,
-    process_event_with_data_worker,
-    &context);
+    &context,
+    process_event_with_data_worker);
 
   drop_from_buffer(self, context.data_size);
 }
