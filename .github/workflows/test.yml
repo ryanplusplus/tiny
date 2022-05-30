@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   pull_request:
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
 
     - uses: SimenB/github-actions-cpu-cores@v1
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
 
