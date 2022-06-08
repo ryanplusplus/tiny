@@ -54,7 +54,7 @@ TEST_GROUP(tiny_comm)
 
   static void payload_received(void* context, const void* _args)
   {
-    reinterpret(args, _args, const tiny_comm_on_receive_args_t*);
+    auto args = reinterpret_cast<const tiny_comm_on_receive_args_t*>(_args);
     (void)context;
 
     mock()

@@ -28,7 +28,7 @@ TEST_GROUP(tiny_message_bus)
   static void subscriber_1(void* context, const void* _args)
   {
     (void)context;
-    reinterpret(args, _args, const tiny_message_bus_on_receive_args_t*);
+    auto args = reinterpret_cast<const tiny_message_bus_on_receive_args_t*>(_args);
     mock()
       .actualCall("subscriber_1")
       .withParameter("message", args->message)
@@ -38,7 +38,7 @@ TEST_GROUP(tiny_message_bus)
   static void subscriber_2(void* context, const void* _args)
   {
     (void)context;
-    reinterpret(args, _args, const tiny_message_bus_on_receive_args_t*);
+    auto args = reinterpret_cast<const tiny_message_bus_on_receive_args_t*>(_args);
     mock()
       .actualCall("subscriber_2")
       .withParameter("message", args->message)

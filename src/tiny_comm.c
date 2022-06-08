@@ -60,7 +60,7 @@ static bool send_byte(self_t* self, uint8_t byte)
 // May be running in an interrupt context
 static void send_complete(void* context, const void* args)
 {
-  reinterpret(self, context, self_t*);
+  self_t* self = context;
   (void)args;
 
   // We need to respect this flag because this might be
@@ -103,8 +103,8 @@ static void send_complete(void* context, const void* args)
 // May be running in an interrupt context
 static void byte_received(void* context, const void* _args)
 {
-  reinterpret(self, context, self_t*);
-  reinterpret(args, _args, const tiny_uart_on_receive_args_t*);
+  self_t* self = context;
+  const tiny_uart_on_receive_args_t* args = _args;
 
   if(self->received_packet_ready) {
     return;

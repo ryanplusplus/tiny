@@ -8,7 +8,7 @@
 
 static tiny_time_source_ticks_t ticks(i_tiny_time_source_t* _self)
 {
-  reinterpret(self, _self, tiny_time_source_double_t*);
+  auto self = reinterpret_cast<tiny_time_source_double_t*>(_self);
   return self->ticks;
 }
 

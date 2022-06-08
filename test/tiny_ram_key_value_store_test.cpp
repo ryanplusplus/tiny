@@ -42,7 +42,7 @@ TEST_GROUP(tiny_ram_key_value_store)
   static void value_changed(void* context, const void* _args)
   {
     (void)context;
-    reinterpret(args, _args, const tiny_key_value_store_on_change_args_t*);
+    auto args = reinterpret_cast<const tiny_key_value_store_on_change_args_t*>(_args);
     mock()
       .actualCall("value_changed")
       .withParameter("key", args->key)

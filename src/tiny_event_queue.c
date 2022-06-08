@@ -26,7 +26,7 @@ static const uint8_t event_with_data_start_value = event_with_data_start;
 
 static void write_to_buffer(tiny_event_queue_t* self, const void* _data, uint8_t data_size)
 {
-  reinterpret(data, _data, const uint8_t*);
+  const uint8_t* data = _data;
 
   for(uint16_t i = 0; i < data_size; i++) {
     tiny_ring_buffer_insert(&self->ring_buffer, data++);
@@ -35,7 +35,7 @@ static void write_to_buffer(tiny_event_queue_t* self, const void* _data, uint8_t
 
 static void read_from_buffer(tiny_event_queue_t* self, void* _data, uint8_t data_size)
 {
-  reinterpret(data, _data, uint8_t*);
+  uint8_t* data = _data;
 
   for(uint16_t i = 0; i < data_size; i++) {
     tiny_ring_buffer_remove(&self->ring_buffer, data++);
@@ -127,8 +127,8 @@ typedef struct {
 
 static void process_event_with_data_worker(void* _context, void* _data)
 {
-  reinterpret(context, _context, process_event_with_data_context_t*);
-  reinterpret(data, _data, uint8_t*);
+  process_event_with_data_context_t* context = _context;
+  uint8_t* data = _data;
 
   for(uint8_t i = 0; i < context->data_size; i++) {
     read_from_buffer(context->self, data, sizeof(*data));
