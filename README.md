@@ -1,9 +1,7 @@
 # tiny
-`tiny` is a heapless embedded development library optimized for flexible, reusable, and enjoyable development with minimal RAM and ROM usage. `tiny` can be used bare metal, with an RTOS, or integrated into an existing framework like Arduino or Mbed.
+[![Tests](https://github.com/ryanplusplus/tiny/actions/workflows/test.yml/badge.svg)](https://github.com/ryanplusplus/tiny/actions/workflows/test.yml)
 
-need to mention something about being portable?
-
-fixme rough RAM/ROM requirements?
+`tiny` is an embedded development library designed to be enjoyable to use, even in a heapless environment. Its comopnents are designed to be flexible, reusable, and have RAM and ROM usage. `tiny` can be used bare metal, with an RTOS, or integrated into an existing framework like Arduino or Mbed and can be used on all but the smallest microcontrollers.
 
 ## Development
 dependencies
