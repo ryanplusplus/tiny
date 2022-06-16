@@ -2,6 +2,8 @@
  * @file
  * @brief Runs one-shot timers using client-allocated memory.
  *
+ * The tick resolution is not specified, but will generally be 1 millisecond.
+ *
  * Timer durations may be longer than specified but will not be shorter (within
  * the limits of the tick resolution).
  */
@@ -45,7 +47,8 @@ void tiny_timer_group_init(
 
 /*!
  * Runs a timer group. Services at most one timer per call. Returns the number
- * of ticks until the next timer will be ready to run.
+ * of ticks until the next timer will be ready to run. This will generally be
+ * called in the main loop.
  */
 tiny_timer_ticks_t tiny_timer_group_run(
   tiny_timer_group_t* self);
