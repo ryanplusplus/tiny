@@ -1,7 +1,7 @@
 # tiny
 [![Tests](https://github.com/ryanplusplus/tiny/actions/workflows/test.yml/badge.svg)](https://github.com/ryanplusplus/tiny/actions/workflows/test.yml)
 
-`tiny` is an embedded development library designed to be enjoyable to use, even in a heapless environment. Its comopnents are designed to be flexible, reusable, and have RAM and ROM usage. `tiny` can be used bare metal, with an RTOS, or integrated into an existing framework like Arduino or Mbed and can be used on all but the smallest microcontrollers.
+`tiny` is an embedded development library designed to be enjoyable to use, even in a heapless environment. Its components are designed to be flexible, reusable, and have RAM and ROM usage. `tiny` can be used bare metal, with an RTOS, or integrated into an existing framework like Arduino or Mbed and can be used on all but the smallest microcontrollers.
 
 ## Design
 ### Simple
