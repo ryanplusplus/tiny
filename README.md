@@ -69,12 +69,21 @@ fixme for these link to the component headers and give a brief overview
 ### Utilities
 - crc16
 
-## Examples
-### Bare Metal
+## Integration/Use
+for target builds:
+- pull in include
+- build src
+
+for test builds also do:
+- pull in test/include
+- build test/src
+
+### Examples
+#### Bare Metal
 link to samd21-tiny, stm8-tiny, avr-tiny, stm32-tiny, etc.
 
-### RTOS Integration
+#### FreeRTOS
 stm32f050 freertos thing?
 
-### Arduino Integration
+#### Arduino
 link to pio-tiny-starter-kit

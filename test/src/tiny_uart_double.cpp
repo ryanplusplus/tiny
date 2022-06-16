@@ -3,7 +3,7 @@
  * @brief
  */
 
-#include "tiny_uart_double.h"
+#include "double/tiny_uart_double.h"
 #include "CppUTestExt/MockSupport.h"
 #include "tiny_utils.h"
 

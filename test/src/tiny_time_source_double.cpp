@@ -3,7 +3,7 @@
  * @brief
  */
 
-#include "tiny_time_source_double.h"
+#include "double/tiny_time_source_double.h"
 #include "tiny_utils.h"
 
 static tiny_time_source_ticks_t ticks(i_tiny_time_source_t* _self)
