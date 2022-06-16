@@ -3,7 +3,7 @@
  * @brief
  */
 
-#include "tiny_timer_group_double.h"
+#include "double/tiny_timer_group_double.h"
 #include "tiny_utils.h"
 
 void tiny_timer_group_double_init(
