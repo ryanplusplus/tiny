@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract packet-based communication interface.
  */
 
 #ifndef i_tiny_comm_h

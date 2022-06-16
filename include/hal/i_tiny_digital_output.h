@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract digital output.
  */
 
 #ifndef i_tiny_digital_output_h

@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract PWM channel.
  */
 
 #ifndef i_tiny_pwm_h

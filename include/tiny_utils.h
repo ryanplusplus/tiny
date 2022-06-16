@@ -15,9 +15,15 @@
 #define reinterpret(_name, _cast_me, _type) \
   _type _name = (_type)_cast_me
 
+/*!
+ * Calculates the number of elements in an array.
+ */
 #define element_count(_array) \
   (sizeof(_array) / sizeof(_array[0]))
 
+/*!
+ * Calculates the size of the elements in an array.
+ */
 #define element_size(_array) \
   sizeof(_array[0])
 

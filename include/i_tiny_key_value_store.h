@@ -1,6 +1,8 @@
 /*!
  * @file
- * @brief Key value store using pre-defined keys and fixed-sized values.
+ * @brief Abstract key value store using pre-defined keys and fixed-sized values.
+ *
+ * Provides notifications when stored values change.
  */
 
 #ifndef i_tiny_key_value_store_h

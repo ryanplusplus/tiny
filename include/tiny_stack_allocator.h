@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Allows for stack data to be dynamically allocated without alloca() or VLAs.
  */
 
 #ifndef tiny_stack_allocator_h
@@ -15,7 +15,9 @@ enum {
 typedef void (*tiny_stack_allocator_callback_t)(void* context, void* data);
 
 /*!
- * Invokes the provided callback to an aligned pointer of the requested
+ * Invokes the provided callback to an aligned pointer of the requested size.
+ *
+ * @warning The allocated data is valid only during the callback.
  */
 void tiny_stack_allocator_allocate_aligned(
   size_t size,

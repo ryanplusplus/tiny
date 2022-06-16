@@ -1,7 +1,6 @@
 /*!
  * @file
- * @brief Manages the combination of an event callback and context for an event
- * subscriber.
+ * @brief Manages the combination of a callback and context for an event subscriber.
  */
 
 #ifndef tiny_event_subscription_h

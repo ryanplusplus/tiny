@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief Simple implementation of a state chart that models functions as states.
+ * @brief Simple implementation of a state machine that models functions as states.
  *
  * Signals are sent to the current state by invoking the state function with the
  * signal and associated data.

@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief Runs one-shot timers using client-allocated memory.
+ * @brief Runs one-shot and periodic timers using client-allocated memory.
  *
  * The tick resolution is not specified, but will generally be 1 millisecond.
  *

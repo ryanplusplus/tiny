@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract group of analog outputs.
  */
 
 #ifndef i_tiny_analog_output_group_h

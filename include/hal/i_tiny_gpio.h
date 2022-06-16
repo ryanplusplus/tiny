@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract GPIO.
  */
 
 #ifndef i_tiny_gpio_h

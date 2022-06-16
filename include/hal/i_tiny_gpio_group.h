@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract group of GPIOs.
  */
 
 #ifndef i_tiny_gpio_group_h

@@ -5,7 +5,7 @@
  *
  * It is highly recommended to use or at least start with the macros defined in
  * tiny_ram_key_value_store_macros.h to create the configuration. It is non-trivial
- * to do this at compile-time  so that the configuration can be stored in ROM.
+ * to do this at compile-time so that the configuration can be stored in ROM.
  *
  * @warning If data is written un-aligned it may be published unaligned.
  */

@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief Synchronously sends messages from a publisher to all subscribers.
+ * @brief Synchronously sends messages from publishers to all subscribers.
  */
 
 #ifndef i_tiny_message_bus_h

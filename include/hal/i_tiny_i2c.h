@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract synchronous I2C peripheral.
  */
 
 #ifndef i_tiny_i2c_h

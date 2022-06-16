@@ -1,7 +1,6 @@
 /*!
  * @file
- * @brief Default implementation of an event. Supports an arbitrary number of
- * subscribers.
+ * @brief Default implementation of an event. Supports an arbitrary number of subscribers.
  */
 
 #ifndef tiny_event_h

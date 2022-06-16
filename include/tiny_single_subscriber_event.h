@@ -1,8 +1,9 @@
 /*!
  * @file
- * @brief Event implementation that supports only a single subscriber. This reduces
- * stack usage and execution time when the event is published, but limits the event to
- * a single subscriber.
+ * @brief Event implementation that supports only a single subscriber.
+ *
+ * Compared to tiny_event, this reduces offers stack usage and execution time when
+ * the event is published, but limits the event to a single subscriber.
  */
 
 #ifndef tiny_single_subscriber_event_h

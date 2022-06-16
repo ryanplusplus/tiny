@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract digital input.
  */
 
 #ifndef i_tiny_digital_input_h

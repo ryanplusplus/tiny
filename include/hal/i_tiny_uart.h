@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract UART peripheral.
  */
 
 #ifndef i_tiny_uart_h

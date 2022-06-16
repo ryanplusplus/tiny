@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract analog input.
  */
 
 #ifndef i_tiny_analog_input_h

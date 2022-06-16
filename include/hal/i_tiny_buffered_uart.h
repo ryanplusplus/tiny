@@ -1,6 +1,9 @@
 /*!
  * @file
- * @brief
+ * @brief Abstract buffered UART.
+ *
+ * A buffered UART sends and receives chunks of bytes instead of sending and receiving
+ * byte-by-byte. This can be used to abstract over a free-running UART with DMA.
  */
 
 #ifndef i_tiny_buffered_uart_h

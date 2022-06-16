@@ -1,17 +1,20 @@
 /*!
  * @file
- * @brief Linked list that contains nodes allocated by clients.
+ * @brief Linked list that requires nodes to be allocated by clients.
  *
- * Nodes can contain arbitrary data by defining a type that contains
- * a tiny_list_node_t:
+ * This is an intrusive list so stores node data directly in nodes. See:
+ * https://www.data-structures-in-practice.com/intrusive-linked-lists/
+ *
+ * Nodes can contain arbitrary data by defining a type that contains a
+ * tiny_list_node_t:
  *
  * typedef struct client_node_t {
  *   tiny_list_node_t node;
  *   int data;
  * }
  *
- * This type must be cast to a tiny_list_node_t to be added but can
- * be cast back by the client so that the data can be accessed.
+ * This type must be cast to a tiny_list_node_t to be added but can be cast back
+ * by the client so that the data can be accessed.
  */
 
 #ifndef tiny_list_h
