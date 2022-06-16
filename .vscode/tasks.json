@@ -7,11 +7,6 @@
       "label": "Build",
       "type": "shell",
       "command": "make build/tiny_tests"
-    },
-    {
-      "label": "Build (cmake)",
-      "type": "shell",
-      "command": "cmake --preset test && cmake --build --preset test"
     }
   ]
 }

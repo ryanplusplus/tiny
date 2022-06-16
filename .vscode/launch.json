@@ -28,31 +28,6 @@
           "ignoreFailures": true
         }
       ]
-    },
-    {
-      "name": "Debug (cmake)",
-      "type": "cppdbg",
-      "request": "launch",
-      "preLaunchTask": "Build (cmake)",
-      "program": "${workspaceFolder}/build/test/test/tiny_tests",
-      "args": [],
-      "stopAtEntry": true,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": false,
-      "linux": {
-        "MIMode": "gdb"
-      },
-      "osx": {
-        "MIMode": "lldb"
-      },
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
     }
   ]
 }
