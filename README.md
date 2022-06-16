@@ -3,34 +3,26 @@
 
 `tiny` is an embedded development library designed to be enjoyable to use, even in a heapless environment. Its comopnents are designed to be flexible, reusable, and have RAM and ROM usage. `tiny` can be used bare metal, with an RTOS, or integrated into an existing framework like Arduino or Mbed and can be used on all but the smallest microcontrollers.
 
-## Development
-dependencies
-- make
-- clang/gcc
-- cpputest
-
-build and run tests with `make`
-
-use `rerun` to watch with `rerun make` or `rerun "make -j8"`
-
-## Design Philosophy/Concepts/???
+## Design Philosophy
 ### Simplicity
+`tiny` favors simplicity over providing every possible feature. This makes it easier to learn, keeps code size and compile times down, and helps to ensure that the features that _are_ included are high impact.
 
 ### Event-Driven
-event-driven with synchronous event propagation and short RTCs
+`tiny` is designed for event-driven applications. It relies upon short RTCs (run-to-complete steps) and synchronous event propagation to balance power with the limitations inherent in C and in embedded development.
 
 ### Abstractions
-something about interfaces, portability, testability, and flexibility
-
-something about HAL using interfaces
+`tiny` relies heavily upon run-time polymorphism provided by low-cost abstractions. These are akin to interfaces in other programming langauges and allow for a roughly object-oriented style, but without inheritance. Interfaces make `tiny` flexible, testable, and portable.
 
 ## Components
 fixme for these link to the component headers and give a brief overview
 
 ### HAL
-- link to include/hal
+`tiny` provides a basic HAL (hardware abstraction layer) that includes interfaces for interacting with hardware like digital I/O, analog inputs, PWM channels, and serial communication protocols. Most of the core `tiny` components are hardware independent, but those that aren't use the HAL to be portable.
+
+See [include/hal](include/hal) for a list of all interfaces.
 
 ### Data Structures
+
 - list
 - ring buffer
 
@@ -85,3 +77,13 @@ stm32f050 freertos thing?
 
 #### Arduino
 link to pio-tiny-starter-kit
+
+## Development
+dependencies
+- make
+- clang/gcc
+- cpputest
+
+build and run tests with `make`
+
+use `rerun` to watch with `rerun make` or `rerun "make -j8"`
