@@ -27,15 +27,15 @@ typedef struct {
   tiny_timer_callback_t callback;
   void* context;
   tiny_timer_ticks_t start_ticks;
-  tiny_timer_ticks_t remaining_ticks;
+  tiny_timer_ticks_t expiration_ticks;
   bool periodic;
 } tiny_timer_t;
 
 typedef struct tiny_timer_group_t {
   i_tiny_time_source_t* time_source;
   tiny_list_t timers;
-  tiny_time_source_ticks_t last_ticks;
-  tiny_timer_ticks_t next_ready;
+  tiny_time_source_ticks_t last_time_source_ticks;
+  tiny_timer_ticks_t current_ticks;
 } tiny_timer_group_t;
 
 /*!
@@ -96,12 +96,8 @@ inline bool tiny_timer_is_running(
 /*!
  * Returns the remaining ticks for a running timer.
  */
-inline tiny_timer_ticks_t tiny_timer_remaining_ticks(
+tiny_timer_ticks_t tiny_timer_remaining_ticks(
   tiny_timer_group_t* self,
-  tiny_timer_t* timer)
-{
-  (void)self;
-  return timer->remaining_ticks;
-}
+  tiny_timer_t* timer);
 
 #endif

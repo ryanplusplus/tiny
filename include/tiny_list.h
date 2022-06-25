@@ -60,6 +60,16 @@ inline void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node)
 void tiny_list_push_back(tiny_list_t* self, tiny_list_node_t* node);
 
 /*!
+ * Inserts a node after the specified node.
+ */
+inline void tiny_list_insert_after(tiny_list_t* self, tiny_list_node_t* after, tiny_list_node_t* to_insert)
+{
+  (void)self;
+  to_insert->next = after->next;
+  after->next = to_insert;
+}
+
+/*!
  * Removes the node from the front of the list. Returns the node.
  */
 inline tiny_list_node_t* tiny_list_pop_front(tiny_list_t* self)

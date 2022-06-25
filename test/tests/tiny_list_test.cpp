@@ -201,3 +201,14 @@ TEST(tiny_list, should_give_the_index_of_a_specified_node)
   CHECK(1 == tiny_list_index_of(&list, &node_2));
   CHECK(2 == tiny_list_index_of(&list, &node_3));
 }
+
+TEST(tiny_list, should_allow_nodes_to_be_inserted_after_a_given_node)
+{
+  tiny_list_push_back(&list, &node_1);
+  tiny_list_push_back(&list, &node_2);
+  tiny_list_insert_after(&list, &node_1, &node_3);
+
+  CHECK(0 == tiny_list_index_of(&list, &node_1));
+  CHECK(1 == tiny_list_index_of(&list, &node_3));
+  CHECK(2 == tiny_list_index_of(&list, &node_2));
+}

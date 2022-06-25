@@ -24,6 +24,8 @@ uint16_t tiny_list_count(tiny_list_t* self)
 
 extern inline void tiny_list_push_front(tiny_list_t* self, tiny_list_node_t* node);
 
+extern inline void tiny_list_insert_after(tiny_list_t* self, tiny_list_node_t* after, tiny_list_node_t* to_insert);
+
 void tiny_list_push_back(tiny_list_t* self, tiny_list_node_t* node)
 {
   tiny_list_node_t* current = self->head.next;
