@@ -20,6 +20,8 @@ typedef struct {
 typedef struct i_tiny_analog_input_group_api_t {
   /*!
    * Reads the analog input channel.
+   *
+   * The result is normalized to the full scale range of Counts.
    */
   tiny_analog_input_counts_t (*read)(i_tiny_analog_input_group_t* self, tiny_analog_input_channel_t channel);
 } i_tiny_analog_input_group_api_t;

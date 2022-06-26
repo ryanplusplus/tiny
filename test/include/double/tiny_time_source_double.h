@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief Time source test double.
  */
 
 #ifndef tiny_time_source_double_h

@@ -29,6 +29,7 @@ typedef struct i_tiny_event_queue_api_t {
 
   /*!
    * Enqueues an event with data to be raised later by invoking the provided callback.
+   *
    * @note data is copied and does not have to remain valid after the call
    */
   void (*enqueue_with_data)(

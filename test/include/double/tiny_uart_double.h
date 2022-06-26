@@ -1,6 +1,6 @@
 /*!
  * @file
- * @brief
+ * @brief UART test double.
  */
 
 #ifndef tiny_uart_double_h

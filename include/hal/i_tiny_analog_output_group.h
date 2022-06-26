@@ -20,6 +20,8 @@ typedef struct {
 typedef struct i_tiny_analog_output_group_api_t {
   /*!
    * Writes the analog output channel.
+   *
+   * The output counts are normalized to the full scale range of Counts.
    */
   void (*write)(
     i_tiny_analog_output_group_t* self,

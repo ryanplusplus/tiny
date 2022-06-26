@@ -83,7 +83,7 @@ Building and running tests requires MacOS or Linux and:
 - [CppUTest](http://cpputest.github.io/)
 - [`rerun`](https://rerun.github.io/rerun/) (optional)
 
-Builds and run tests with:
+Build and run tests with:
 
 ```shell
 $ make

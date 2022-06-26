@@ -30,14 +30,14 @@ typedef struct i_tiny_buffered_uart_api_t {
   void (*send)(i_tiny_buffered_uart_t* self, const void* buffer, uint16_t buffer_size);
 
   /*!
-   * Event raised when a byte is finished being sent. This is raised only
+   * Event raised when a buffer is finished being sent. This is raised only
    * during a call to run().
    */
   i_tiny_event_t* (*on_send_complete)(i_tiny_buffered_uart_t* self);
 
   /*!
-   * Event raised when a byte is received. This is raised only
-   * during a call to run().
+   * Event raised when bytes are received. This is raised only during a call
+   * to run().
    */
   i_tiny_event_t* (*on_receive)(i_tiny_buffered_uart_t* self);
 
