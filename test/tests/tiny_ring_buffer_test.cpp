@@ -75,7 +75,7 @@ TEST(tiny_ring_buffer, should_be_empty_after_initialization)
   the_count_should_be(0);
 }
 
-TEST(tiny_ring_buffer, should_update_size_when_inserting_elements)
+TEST(tiny_ring_buffer, should_update_count_when_inserting_elements)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 5);
 
@@ -86,7 +86,7 @@ TEST(tiny_ring_buffer, should_update_size_when_inserting_elements)
   the_count_should_be(2);
 }
 
-TEST(tiny_ring_buffer, should_give_the_correct_size_when_full)
+TEST(tiny_ring_buffer, should_give_the_correct_count_when_full)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 3);
 
@@ -96,7 +96,7 @@ TEST(tiny_ring_buffer, should_give_the_correct_size_when_full)
   the_count_should_be(3);
 }
 
-TEST(tiny_ring_buffer, should_give_the_correct_size_after_overwriting)
+TEST(tiny_ring_buffer, should_give_the_correct_count_after_overwriting)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 3);
 
@@ -107,7 +107,7 @@ TEST(tiny_ring_buffer, should_give_the_correct_size_after_overwriting)
   the_count_should_be(3);
 }
 
-TEST(tiny_ring_buffer, should_update_size_when_removing_elements)
+TEST(tiny_ring_buffer, should_update_count_when_removing_elements)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 5);
 
@@ -121,7 +121,7 @@ TEST(tiny_ring_buffer, should_update_size_when_removing_elements)
   the_count_should_be(0);
 }
 
-TEST(tiny_ring_buffer, should_give_the_correct_size_after_head_wraps_around)
+TEST(tiny_ring_buffer, should_give_the_correct_count_after_head_wraps_around)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 3);
 
