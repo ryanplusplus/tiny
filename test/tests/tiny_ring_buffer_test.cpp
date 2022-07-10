@@ -75,7 +75,7 @@ TEST(tiny_ring_buffer, should_be_empty_after_initialization)
   the_count_should_be(0);
 }
 
-TEST(tiny_ring_buffer, should_update_size_when_inserting_elements)
+TEST(tiny_ring_buffer, should_update_count_when_inserting_elements)
 {
   given_initialization_with_element_size_and_count(sizeof(uint16_t), 5);
 
