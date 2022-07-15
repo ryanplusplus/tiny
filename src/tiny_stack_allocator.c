@@ -4,13 +4,16 @@
  */
 
 #include <stdint.h>
+#include <stddef.h>
 #include "tiny_stack_allocator.h"
 #include "tiny_utils.h"
+
+#define max(a, b) ((a) > (b) ? a : b)
 
 #define define_worker(_size)                                                          \
   static void worker_##_size(tiny_stack_allocator_callback_t callback, void* context) \
   {                                                                                   \
-    uint64_t data[_size / sizeof(uint64_t)];                                          \
+    max_align_t data[max(_size, sizeof(max_align_t)) / sizeof(max_align_t)];          \
     callback(context, data);                                                          \
   }                                                                                   \
   typedef int dummy##_size
@@ -29,12 +32,12 @@ typedef struct
 } worker_t;
 
 static const worker_t workers[] = {
-  { 8, worker_8 },
-  { 16, worker_16 },
-  { 32, worker_32 },
-  { 64, worker_64 },
-  { 128, worker_128 },
-  { 256, worker_256 },
+  {8, worker_8},
+  {16, worker_16},
+  {32, worker_32},
+  {64, worker_64},
+  {128, worker_128},
+  {256, worker_256},
 };
 
 void tiny_stack_allocator_allocate_aligned(

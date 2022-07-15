@@ -21,7 +21,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined
 
-CFLAGS += -std=c99 -pedantic
+CFLAGS += -std=c11 -pedantic
 CPPFLAGS += $(SANITIZE_FLAGS) -fno-omit-frame-pointer
 CPPFLAGS += $(INC_FLAGS) -MMD -MP -g -Wall -Wextra -Wcast-qual -Werror
 CXXFLAGS += -std=c++17
