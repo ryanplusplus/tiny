@@ -21,10 +21,12 @@ static void add_timer(tiny_timer_group_t* self, tiny_timer_t* timer)
   timer->expired = false;
 
   tiny_list_node_t* after = NULL;
-  tiny_timer_ticks_t remaining_ticks = tiny_timer_remaining_ticks(self, timer);
+  tiny_timer_ticks_t to_add_remaining_ticks = timer->expiration_ticks - self->current_ticks;
 
   tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
-    if(remaining_ticks >= tiny_timer_remaining_ticks(self, timer)) {
+    tiny_timer_ticks_t remaining_ticks = timer->expiration_ticks - self->current_ticks;
+
+    if(timer->expired || (to_add_remaining_ticks >= remaining_ticks)) {
       after = &timer->node;
     }
     else {
