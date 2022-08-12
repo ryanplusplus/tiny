@@ -416,3 +416,40 @@ TEST(tiny_timer, should_not_allow_a_timer_to_be_starved)
   should_invoke_timer_callback(&timer_1);
   after_the_group_is_run();
 }
+
+TEST(tiny_timer, should_run_several_periodic_timers_with_high_latency)
+{
+  given_that_periodic_timer_has_been_started(&timer_1, 5);
+  given_that_periodic_timer_has_been_started(&timer_2, 50);
+  given_that_periodic_timer_has_been_started(&timer_3, 100);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_2);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_3);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_2);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(25);
+
+  should_invoke_timer_callback(&timer_3);
+  after_time_passes_and_the_group_is_run(25);
+}

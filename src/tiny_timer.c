@@ -72,6 +72,10 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
   self->current_ticks += delta;
 
   tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
+    if(timer->expired) {
+      continue;
+    }
+
     tiny_timer_ticks_t remaining_ticks = timer->expiration_ticks - last_ticks;
 
     if(remaining_ticks <= delta) {
