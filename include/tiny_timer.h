@@ -29,6 +29,7 @@ typedef struct {
   tiny_timer_ticks_t start_ticks;
   tiny_timer_ticks_t expiration_ticks;
   bool periodic;
+  bool expired;
 } tiny_timer_t;
 
 typedef struct tiny_timer_group_t {

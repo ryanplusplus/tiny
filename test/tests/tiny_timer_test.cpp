@@ -251,12 +251,33 @@ TEST(tiny_timer, should_manage_multiple_timers_simultaneously)
   should_invoke_timer_callback_after(&timer_1, 4);
 }
 
+TEST(tiny_timer, should_invoke_at_most_one_timer_callback_per_run)
+{
+  given_that_timer_has_been_started(&timer_1, 5);
+  given_that_timer_has_been_started(&timer_2, 5);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(5);
+}
+
 TEST(tiny_timer, should_run_periodic_timers)
 {
   given_that_periodic_timer_has_been_started(&timer_1, 7);
 
   should_invoke_timer_callback_after(&timer_1, 7);
   should_invoke_timer_callback_after(&timer_1, 7);
+}
+
+TEST(tiny_timer, should_run_multiple_periodic_timers_properly_when_both_are_late)
+{
+  given_that_periodic_timer_has_been_started(&timer_1, 5);
+  given_that_periodic_timer_has_been_started(&timer_2, 5);
+
+  should_invoke_timer_callback(&timer_1);
+  after_time_passes_and_the_group_is_run(10);
+
+  should_invoke_timer_callback(&timer_2);
+  after_the_group_is_run();
 }
 
 TEST(tiny_timer, should_allow_periodic_timers_to_be_stopped_from_their_callback)
@@ -351,6 +372,15 @@ TEST(tiny_timer, should_give_the_remaining_ticks_for_a_running_timer)
 
   given_that_time_has_passed_and_the_group_has_been_run(5);
   remaining_timer_for_timer_should_be(&timer_1, 2);
+}
+
+TEST(tiny_timer, should_give_the_remaining_ticks_for_a_past_due_timer)
+{
+  given_that_timer_has_been_started(&timer_1, 7);
+  given_that_timer_has_been_started(&timer_2, 7);
+  given_that_time_has_passed_and_the_group_has_been_run(10);
+
+  remaining_timer_for_timer_should_be(&timer_2, 0);
 }
 
 TEST(tiny_timer, should_consider_pending_ticks_when_calculating_remaining_ticks)

@@ -18,6 +18,8 @@ static void add_timer(tiny_timer_group_t* self, tiny_timer_t* timer)
 {
   tiny_list_remove(&self->timers, &timer->node);
 
+  timer->expired = false;
+
   tiny_list_node_t* after = NULL;
   tiny_timer_ticks_t remaining_ticks = tiny_timer_remaining_ticks(self, timer);
 
@@ -73,6 +75,15 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
     tiny_timer_ticks_t remaining_ticks = timer->expiration_ticks - last_ticks;
 
     if(remaining_ticks <= delta) {
+      timer->expired = true;
+    }
+    else {
+      break;
+    }
+  });
+
+  tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
+    if(timer->expired) {
       if(!timer->periodic) {
         tiny_list_remove(&self->timers, &timer->node);
       }
@@ -83,9 +94,9 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
         timer->expiration_ticks = self->current_ticks + timer->start_ticks;
         add_timer(self, timer);
       }
-
-      break;
     }
+
+    break;
   });
 
   tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
@@ -126,7 +137,7 @@ tiny_timer_ticks_t tiny_timer_remaining_ticks(
   tiny_timer_ticks_t remaining = timer->expiration_ticks - self->current_ticks;
   tiny_time_source_ticks_t pending = pending_ticks(self);
 
-  if(remaining > pending) {
+  if(!timer->expired && (remaining > pending)) {
     return remaining - pending;
   }
   else {
