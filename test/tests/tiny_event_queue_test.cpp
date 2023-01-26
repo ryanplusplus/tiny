@@ -12,10 +12,6 @@ extern "C" {
 
 TEST_GROUP(tiny_event_queue)
 {
-  enum {
-    callback_size = sizeof(tiny_queue_unable_to_enqueue_callback_t)
-  };
-
   tiny_event_queue_t self;
 
   uint8_t buffer[1024];
@@ -54,7 +50,7 @@ TEST_GROUP(tiny_event_queue)
     tiny_event_queue_init(&self, buffer, buffer_size, unable_to_enqueue);
   }
 
-  void given_that_u32_event_has_been_enqueued(uint32_t data)
+  void given_that_a_u32_event_has_been_enqueued(uint32_t data)
   {
     when_a_u32_event_is_enqueued(data);
   }
@@ -99,6 +95,13 @@ TEST_GROUP(tiny_event_queue)
     mock().expectOneCall("callback");
   }
 
+  void given_the_queue_has_been_run()
+  {
+    mock().disable();
+    when_the_queue_is_run();
+    mock().enable();
+  }
+
   void when_the_queue_is_run()
   {
     run_result = tiny_event_queue_run(&self);
@@ -141,7 +144,7 @@ TEST(tiny_event_queue, should_raise_the_enqueued_event_when_run)
 TEST(tiny_event_queue, should_raise_the_enqueued_event_with_data_when_run)
 {
   given_that_the_queue_has_been_initialized_with_buffer_size(100);
-  given_that_u32_event_has_been_enqueued(0x12345678);
+  given_that_a_u32_event_has_been_enqueued(0x12345678);
 
   u32_event_should_be_raised(0x12345678);
   when_the_queue_is_run();
@@ -163,22 +166,42 @@ TEST(tiny_event_queue, should_enqueue_and_process_multiple_events)
 
 TEST(tiny_event_queue, should_ensure_that_events_can_be_enqueued)
 {
-  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(void*) + 1);
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_t) + 1);
   nothing_should_happen();
   when_an_event_is_enqueued();
 
-  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(void*));
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_t));
   should_raise_unable_to_enqueue_error();
+  when_an_event_is_enqueued();
+}
+
+TEST(tiny_event_queue, should_ensure_that_events_are_fully_remove_from_the_queue_after_being_run)
+{
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_t) + 1);
+  given_that_an_event_has_been_enqueued();
+  given_the_queue_has_been_run();
+
+  nothing_should_happen();
   when_an_event_is_enqueued();
 }
 
 TEST(tiny_event_queue, should_ensure_that_events_with_data_can_be_enqueued)
 {
-  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(void*) + sizeof(uint8_t) + sizeof(uint16_t) + 1);
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_with_data_t) + sizeof(uint8_t) + sizeof(uint16_t) + 1);
   nothing_should_happen();
   when_a_u16_event_is_enqueued(0x1234);
 
-  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(void*) + sizeof(uint8_t) + sizeof(uint16_t));
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_with_data_t) + sizeof(uint8_t) + sizeof(uint16_t));
   should_raise_unable_to_enqueue_error();
+  when_a_u16_event_is_enqueued(0x1234);
+}
+
+TEST(tiny_event_queue, should_ensure_that_events_with_data_are_fully_remove_from_the_queue_after_being_run)
+{
+  given_that_the_queue_has_been_initialized_with_buffer_size(sizeof(uint8_t) + sizeof(tiny_event_queue_callback_with_data_t) + sizeof(uint8_t) + sizeof(uint16_t) + 1);
+  given_that_a_u16_event_has_been_enqueued(0x1234);
+  given_the_queue_has_been_run();
+
+  nothing_should_happen();
   when_a_u16_event_is_enqueued(0x1234);
 }

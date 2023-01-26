@@ -8,8 +8,8 @@
 #include "tiny_utils.h"
 
 enum {
-  event_start,
-  event_with_data_start,
+  type_event,
+  type_event_with_data,
 
   event_overhead =
     sizeof(uint8_t) + // start
@@ -21,8 +21,8 @@ enum {
     sizeof(uint8_t) // data size
 };
 
-static const uint8_t event_start_value = event_start;
-static const uint8_t event_with_data_start_value = event_with_data_start;
+static const uint8_t event_type_value = type_event;
+static const uint8_t event_type_with_data_value = type_event_with_data;
 
 static void write_to_buffer(tiny_event_queue_t* self, const void* _data, uint8_t data_size)
 {
@@ -42,21 +42,6 @@ static void read_from_buffer(tiny_event_queue_t* self, void* _data, uint8_t data
   }
 }
 
-static void drop_from_buffer(tiny_event_queue_t* self, uint8_t count)
-{
-  for(uint16_t i = 0; i < count; i++) {
-    uint8_t drop;
-    tiny_ring_buffer_remove(&self->ring_buffer, &drop);
-  }
-}
-
-static uint8_t peek(tiny_event_queue_t* self)
-{
-  uint8_t peeked;
-  tiny_ring_buffer_at(&self->ring_buffer, 0, &peeked);
-  return peeked;
-}
-
 static void enqueue(
   i_tiny_event_queue_t* _self,
   tiny_event_queue_callback_t callback)
@@ -71,7 +56,7 @@ static void enqueue(
     return;
   }
 
-  write_to_buffer(self, &event_start_value, sizeof(event_start_value));
+  write_to_buffer(self, &event_type_value, sizeof(event_type_value));
   write_to_buffer(self, &callback, sizeof(callback));
 }
 
@@ -91,7 +76,7 @@ static void enqueue_with_data(
     return;
   }
 
-  write_to_buffer(self, &event_with_data_start_value, sizeof(event_with_data_start_value));
+  write_to_buffer(self, &event_type_with_data_value, sizeof(event_type_with_data_value));
   write_to_buffer(self, &callback, sizeof(callback));
   write_to_buffer(self, &data_size, sizeof(data_size));
   write_to_buffer(self, data, data_size);
@@ -113,8 +98,6 @@ void tiny_event_queue_init(
 static void process_event(tiny_event_queue_t* self)
 {
   tiny_event_queue_callback_t callback;
-
-  drop_from_buffer(self, 1);
   read_from_buffer(self, &callback, sizeof(callback));
   callback();
 }
@@ -125,24 +108,17 @@ typedef struct {
   uint8_t data_size;
 } process_event_with_data_context_t;
 
-static void process_event_with_data_worker(void* _context, void* _data)
+static void process_event_with_data_worker(void* _context, void* data)
 {
   process_event_with_data_context_t* context = _context;
-  uint8_t* data = _data;
-
-  for(uint8_t i = 0; i < context->data_size; i++) {
-    read_from_buffer(context->self, data, sizeof(*data));
-    data++;
-  }
-
-  context->callback(_data);
+  read_from_buffer(context->self, data, context->data_size);
+  context->callback(data);
 }
 
 static void process_event_with_data(tiny_event_queue_t* self)
 {
   process_event_with_data_context_t context = { .self = self };
 
-  drop_from_buffer(self, 1);
   read_from_buffer(self, &context.callback, sizeof(context.callback));
   read_from_buffer(self, &context.data_size, sizeof(context.data_size));
 
@@ -150,8 +126,6 @@ static void process_event_with_data(tiny_event_queue_t* self)
     context.data_size,
     &context,
     process_event_with_data_worker);
-
-  drop_from_buffer(self, context.data_size);
 }
 
 bool tiny_event_queue_run(tiny_event_queue_t* self)
@@ -160,12 +134,15 @@ bool tiny_event_queue_run(tiny_event_queue_t* self)
     return false;
   }
 
-  switch(peek(self)) {
-    case event_start:
+  uint8_t type;
+  read_from_buffer(self, &type, sizeof(type));
+
+  switch(type) {
+    case type_event:
       process_event(self);
       break;
 
-    case event_with_data_start:
+    case type_event_with_data:
       process_event_with_data(self);
       break;
   }
