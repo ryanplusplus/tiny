@@ -55,6 +55,12 @@ tiny_timer_ticks_t tiny_timer_group_run(
   tiny_timer_group_t* self);
 
 /*!
+ * Returns the ticks until the next timer will be ready to execute.
+ */
+tiny_timer_ticks_t tiny_timer_ticks_until_next_ready(
+  tiny_timer_group_t* self);
+
+/*!
  * Starts a timer.
  */
 void tiny_timer_start(

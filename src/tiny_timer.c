@@ -105,6 +105,11 @@ tiny_timer_ticks_t tiny_timer_group_run(tiny_timer_group_t* self)
     break;
   });
 
+  return tiny_timer_ticks_until_next_ready(self);
+}
+
+tiny_timer_ticks_t tiny_timer_ticks_until_next_ready(tiny_timer_group_t* self)
+{
   tiny_list_for_each(&self->timers, tiny_timer_t, timer, {
     return tiny_timer_remaining_ticks(self, timer);
   });

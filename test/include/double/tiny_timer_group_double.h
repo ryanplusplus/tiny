@@ -29,7 +29,6 @@ void tiny_timer_group_double_init(
  */
 void tiny_timer_group_double_elapse_time(
   tiny_timer_group_double_t* self,
-  tiny_timer_ticks_t ticks,
-  tiny_time_source_ticks_t ticks_per_run = 1);
+  tiny_timer_ticks_t ticks);
 
 #endif

@@ -173,6 +173,7 @@ TEST_GROUP(tiny_timer)
     mock().disable();
     tiny_timer_ticks_t actual = tiny_timer_group_run(&group);
     CHECK_EQUAL(expected, actual);
+    CHECK_EQUAL(actual, tiny_timer_ticks_until_next_ready(&group));
     mock().enable();
   }
 
