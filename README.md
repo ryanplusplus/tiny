@@ -39,7 +39,7 @@ Event queues allow work to be queued to another RTC or to move an between an int
 - [`i_tiny_event_queue`](include/i_tiny_event_queue.h)
 - [`tiny_event_queue`](include/tiny_event_queue.h)
 
-### Messages Buses
+### Message Buses
 `tiny`'s message bus interface allows components to broadcast events within an application. See:
 - [`i_tiny_message_bus`](include/i_tiny_message_bus.h)
 - [`tiny_message_bus`](include/tiny_message_bus.h)
