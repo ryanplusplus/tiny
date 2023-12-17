@@ -16,8 +16,8 @@
 #ifndef tiny_comm_h
 #define tiny_comm_h
 
-#include "i_tiny_comm.h"
 #include "hal/i_tiny_uart.h"
+#include "i_tiny_comm.h"
 #include "tiny_event.h"
 
 typedef struct {

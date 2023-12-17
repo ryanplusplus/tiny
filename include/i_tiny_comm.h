@@ -6,8 +6,8 @@
 #ifndef i_tiny_comm_h
 #define i_tiny_comm_h
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "i_tiny_event.h"
 
 typedef struct {

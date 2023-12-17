@@ -8,8 +8,8 @@
 #ifndef i_tiny_key_value_store_h
 #define i_tiny_key_value_store_h
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "i_tiny_event.h"
 
 typedef uint8_t tiny_key_value_store_key_t;

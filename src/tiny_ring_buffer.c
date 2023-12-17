@@ -8,8 +8,8 @@
  * - remove must write to the tail pointer after copying the element
  */
 
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
 #include "tiny_ring_buffer.h"
 
 static inline unsigned increment_with_wrap(unsigned x, unsigned limit)

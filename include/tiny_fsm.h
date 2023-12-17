@@ -13,8 +13,8 @@
 #ifndef tiny_fsm_h
 #define tiny_fsm_h
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 enum {
   tiny_fsm_signal_entry,

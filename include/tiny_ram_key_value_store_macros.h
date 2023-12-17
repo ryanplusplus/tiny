@@ -33,8 +33,8 @@
 #ifndef tiny_ram_key_value_store_macros_h
 #define tiny_ram_key_value_store_macros_h
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define ram_key_value_pairs_expand_as_enumeration(_key, value_type) _key,
 

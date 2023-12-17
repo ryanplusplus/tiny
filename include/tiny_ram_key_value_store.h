@@ -14,8 +14,8 @@
 #define tiny_ram_key_value_store_h
 
 #include "i_tiny_key_value_store.h"
-#include "tiny_ram_key_value_store_macros.h"
 #include "tiny_event.h"
+#include "tiny_ram_key_value_store_macros.h"
 
 typedef struct {
   uint16_t value_offset;

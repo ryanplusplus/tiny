@@ -11,8 +11,8 @@
 #ifndef tiny_timer_h
 #define tiny_timer_h
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "i_tiny_time_source.h"
 #include "tiny_list.h"
 

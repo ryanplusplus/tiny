@@ -3,8 +3,8 @@
  * @brief
  */
 
-#include <string.h>
 #include <stddef.h>
+#include <string.h>
 #include "tiny_ram_key_value_store.h"
 #include "tiny_utils.h"
 

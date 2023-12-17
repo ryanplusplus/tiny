@@ -3,8 +3,8 @@
  * @brief
  */
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "tiny_stack_allocator.h"
 #include "tiny_utils.h"
 
@@ -32,12 +32,12 @@ typedef struct
 } worker_t;
 
 static const worker_t workers[] = {
-  {8, worker_8},
-  {16, worker_16},
-  {32, worker_32},
-  {64, worker_64},
-  {128, worker_128},
-  {256, worker_256},
+  { 8, worker_8 },
+  { 16, worker_16 },
+  { 32, worker_32 },
+  { 64, worker_64 },
+  { 128, worker_128 },
+  { 256, worker_256 },
 };
 
 void tiny_stack_allocator_allocate_aligned(

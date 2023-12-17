@@ -13,8 +13,8 @@
 #ifndef tiny_event_queue_h
 #define tiny_event_queue_h
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "i_tiny_event_queue.h"
 #include "tiny_ring_buffer.h"
 
