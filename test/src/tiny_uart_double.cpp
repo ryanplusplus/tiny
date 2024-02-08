@@ -12,6 +12,10 @@ static void send(i_tiny_uart_t* _self, uint8_t byte)
   auto self = reinterpret_cast<tiny_uart_double_t*>(_self);
   self->sending = true;
   mock().actualCall("send").onObject(self).withParameter("byte", byte);
+
+  if(self->automatic_send_complete) {
+    tiny_uart_double_trigger_send_complete(self);
+  }
 }
 
 static i_tiny_event_t* on_send_complete(i_tiny_uart_t* _self)
@@ -32,6 +36,7 @@ void tiny_uart_double_init(tiny_uart_double_t* self)
 {
   self->interface.api = &api;
   self->sending = false;
+  self->automatic_send_complete = false;
   tiny_event_init(&self->send_complete);
   tiny_event_init(&self->receive);
 }
@@ -51,4 +56,9 @@ void tiny_uart_double_trigger_receive(tiny_uart_double_t* self, uint8_t byte)
 {
   tiny_uart_on_receive_args_t args = { byte };
   tiny_event_publish(&self->receive, &args);
+}
+
+void tiny_uart_double_configure_automatic_send_complete(tiny_uart_double_t* self, bool enabled)
+{
+  self->automatic_send_complete = enabled;
 }
