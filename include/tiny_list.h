@@ -32,8 +32,7 @@ typedef struct {
   tiny_list_node_t head;
 } tiny_list_t;
 
-typedef struct
-{
+typedef struct {
   tiny_list_node_t* current;
 } tiny_list_iterator_t;
 

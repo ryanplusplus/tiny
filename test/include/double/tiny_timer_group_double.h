@@ -12,8 +12,7 @@ extern "C" {
 #include "tiny_timer.h"
 }
 
-typedef struct
-{
+typedef struct {
   tiny_timer_group_t timer_group;
   tiny_time_source_double_t time_source;
 } tiny_timer_group_double_t;

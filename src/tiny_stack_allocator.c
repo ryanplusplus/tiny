@@ -25,8 +25,7 @@ define_worker(64);
 define_worker(128);
 define_worker(256);
 
-typedef struct
-{
+typedef struct {
   size_t size;
   void (*worker)(tiny_stack_allocator_callback_t callback, void* context);
 } worker_t;
