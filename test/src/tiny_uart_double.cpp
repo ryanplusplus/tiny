@@ -4,7 +4,7 @@
  */
 
 #include "CppUTestExt/MockSupport.h"
-#include "double/tiny_uart_double.h"
+#include "double/tiny_uart_double.hpp"
 #include "tiny_utils.h"
 
 static void send(i_tiny_uart_t* _self, uint8_t byte)

@@ -3,4 +3,4 @@
 --no-notify
 -c
 -w 1
--p **/*.{c,cpp,h}
+-p **/*.{c,cpp,h,hpp}

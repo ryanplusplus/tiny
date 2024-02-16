@@ -3,8 +3,8 @@
  * @brief Time source test double.
  */
 
-#ifndef tiny_time_source_double_h
-#define tiny_time_source_double_h
+#ifndef tiny_time_source_double_hpp
+#define tiny_time_source_double_hpp
 
 #include "i_tiny_time_source.h"
 

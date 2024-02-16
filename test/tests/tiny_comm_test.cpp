@@ -11,7 +11,7 @@ extern "C" {
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
-#include "double/tiny_uart_double.h"
+#include "double/tiny_uart_double.hpp"
 
 #define and_
 

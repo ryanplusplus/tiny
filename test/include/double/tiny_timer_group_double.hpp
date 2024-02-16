@@ -3,10 +3,10 @@
  * @brief Timer group test double.
  */
 
-#ifndef tiny_timer_group_double_h
-#define tiny_timer_group_double_h
+#ifndef tiny_timer_group_double_hpp
+#define tiny_timer_group_double_hpp
 
-#include "tiny_time_source_double.h"
+#include "double/tiny_time_source_double.hpp"
 
 extern "C" {
 #include "tiny_timer.h"

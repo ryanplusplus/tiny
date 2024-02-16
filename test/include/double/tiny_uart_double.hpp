@@ -3,8 +3,8 @@
  * @brief UART test double.
  */
 
-#ifndef tiny_uart_double_h
-#define tiny_uart_double_h
+#ifndef tiny_uart_double_hpp
+#define tiny_uart_double_hpp
 
 extern "C" {
 #include "hal/i_tiny_uart.h"

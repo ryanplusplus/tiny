@@ -4,7 +4,7 @@
  */
 
 #include <algorithm>
-#include "double/tiny_timer_group_double.h"
+#include "double/tiny_timer_group_double.hpp"
 #include "tiny_utils.h"
 
 void tiny_timer_group_double_init(
