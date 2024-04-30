@@ -20,6 +20,7 @@ jobs:
       uses: lyricwulf/abc@v1
       with:
         all: cpputest
+        upgrade-all: true
 
     - uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
