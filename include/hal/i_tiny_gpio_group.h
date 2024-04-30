@@ -39,12 +39,12 @@ typedef struct i_tiny_gpio_group_api_t {
 } i_tiny_gpio_group_api_t;
 
 #define tiny_gpio_group_set_direction(self, channel, direction) \
-  (self)->api->set_direction((self), (channel)(direction))
+  (self)->api->set_direction((self), (channel), (direction))
 
 #define tiny_gpio_group_read(self, channel) \
   (self)->api->read((self), (channel))
 
 #define tiny_gpio_group_write(self, channel, state) \
-  (self)->api->write((self), (channel)(state))
+  (self)->api->write((self), (channel), (state))
 
 #endif
