@@ -13,14 +13,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-latest, macos-12, macos-13, macos-latest]
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-latest, macos-12, macos-13]
 
     steps:
     - name: Install CppUTest
       uses: lyricwulf/abc@v1
       with:
         all: cpputest
-        upgrade-all: true
 
     - uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
