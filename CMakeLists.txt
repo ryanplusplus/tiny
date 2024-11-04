@@ -10,6 +10,7 @@ target_sources(tiny INTERFACE
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_hsm.c
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_list.c
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_message_bus.c
+  ${CMAKE_CURRENT_LIST_DIR}/src/tiny_queue.c
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_ram_key_value_store.c
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_ring_buffer.c
   ${CMAKE_CURRENT_LIST_DIR}/src/tiny_single_subscriber_event.c
