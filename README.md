@@ -20,8 +20,9 @@
 See [include/hal](include/hal) for a list of all interfaces.
 
 ### Data Structures
-`tiny` provides heapless, arbitrarily-sized (intrusive) list and ring buffer data structures. See:
+`tiny` provides heapless, arbitrarily-sized (intrusive) list, queue, and ring buffer data structures. See:
 - [`tiny_list`](include/tiny_list.h)
+- [`tiny_queue`](include/tiny_queue.h)
 - [`tiny_ring_buffer`](include/tiny_ring_buffer.h)
 
 ### Software Timers
