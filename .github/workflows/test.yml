@@ -28,8 +28,10 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Configure brew paths on macOS
+    - name: Test on macOS
       if: matrix.os == 'macos-latest'
-      run: export CPATH="$CPATH:$(brew --prefix)/include" && export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
+      run: CPATH="$CPATH:$(brew --prefix)/include" LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib" make -j${{ steps.cpu-cores.outputs.count }}
 
-    - run: make -j${{ steps.cpu-cores.outputs.count }}
+    - name: Test on Linux
+      if: matrix.os != 'macos-latest'
+      run: make -j${{ steps.cpu-cores.outputs.count }}
