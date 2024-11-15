@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-latest, macos-latest]
+        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-latest, macos-14, macos-latest]
 
     steps:
     - name: Install CppUTest
@@ -28,10 +28,10 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Test on macOS
-      if: matrix.os == 'macos-latest'
-      run: CPATH="$CPATH:$(brew --prefix)/include" LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib" make -j${{ steps.cpu-cores.outputs.count }}
+    - name: Configure brew paths on macOS
+      if: contains(matrix.os, 'macos')
+      run: |
+        echo CPATH="$CPATH:$(brew --prefix)/include" >> $GITHUB_ENV
+        echo LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib" >> $GITHUB_ENV
 
-    - name: Test on Linux
-      if: matrix.os != 'macos-latest'
-      run: make -j${{ steps.cpu-cores.outputs.count }}
+    - run: make -j${{ steps.cpu-cores.outputs.count }}
