@@ -40,6 +40,8 @@ void tiny_uart_double_init(tiny_uart_double_t* self)
   self->interface.api = &api;
   self->sending = false;
   self->automatic_send_complete = false;
+  self->echoing = false;
+
   tiny_event_init(&self->send_complete);
   tiny_event_init(&self->receive);
 }

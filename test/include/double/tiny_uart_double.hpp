@@ -17,6 +17,7 @@ typedef struct {
   tiny_event_t send_complete;
   bool automatic_send_complete;
   bool sending;
+  bool echoing;
 } tiny_uart_double_t;
 
 /*!
