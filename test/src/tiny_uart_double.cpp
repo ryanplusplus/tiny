@@ -16,6 +16,7 @@ static void send(i_tiny_uart_t* _self, uint8_t byte)
   if(self->automatic_send_complete) {
     tiny_uart_double_trigger_send_complete(self);
   }
+
   if(self->echoing) {
     tiny_uart_double_trigger_receive(self, byte);
   }
