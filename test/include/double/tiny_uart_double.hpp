@@ -44,4 +44,9 @@ void tiny_uart_double_trigger_receive(tiny_uart_double_t* self, uint8_t byte);
  */
 void tiny_uart_double_configure_automatic_send_complete(tiny_uart_double_t* self, bool enabled);
 
+/*!
+ * When enabled, the double will raise a receive event when a byte is sent. Defaults to disabled.
+ */
+void tiny_uart_double_enable_echo(tiny_uart_double_t* self);
+
 #endif

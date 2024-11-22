@@ -16,6 +16,9 @@ static void send(i_tiny_uart_t* _self, uint8_t byte)
   if(self->automatic_send_complete) {
     tiny_uart_double_trigger_send_complete(self);
   }
+  if(self->echoing) {
+    tiny_uart_double_trigger_receive(self, byte);
+  }
 }
 
 static i_tiny_event_t* on_send_complete(i_tiny_uart_t* _self)
@@ -61,4 +64,9 @@ void tiny_uart_double_trigger_receive(tiny_uart_double_t* self, uint8_t byte)
 void tiny_uart_double_configure_automatic_send_complete(tiny_uart_double_t* self, bool enabled)
 {
   self->automatic_send_complete = enabled;
+}
+
+void tiny_uart_double_enable_echo(tiny_uart_double_t* self)
+{
+  self->echoing = true;
 }
