@@ -17,6 +17,7 @@ typedef struct {
   tiny_event_t send_complete;
   bool automatic_send_complete;
   bool sending;
+  bool echoing;
 } tiny_uart_double_t;
 
 /*!
@@ -43,5 +44,10 @@ void tiny_uart_double_trigger_receive(tiny_uart_double_t* self, uint8_t byte);
  * When enabled, the double will raise a send complete event when a byte is sent. Defaults to disabled.
  */
 void tiny_uart_double_configure_automatic_send_complete(tiny_uart_double_t* self, bool enabled);
+
+/*!
+ * When enabled, the double will raise a receive event when a byte is sent. Defaults to disabled.
+ */
+void tiny_uart_double_enable_echo(tiny_uart_double_t* self);
 
 #endif
