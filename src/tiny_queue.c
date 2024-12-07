@@ -23,9 +23,9 @@ static void insert_element(tiny_queue_t* self, const void* element, uint16_t ele
   }
 }
 
-static void remove_element_size(tiny_queue_t* self, uint16_t* sizePlaceHolder)
+static void remove_element_size(tiny_queue_t* self, uint16_t* size_placeholder)
 {
-  uint8_t* destination = (uint8_t*)sizePlaceHolder;
+  uint8_t* destination = (uint8_t*)size_placeholder;
   for(uint16_t i = 0; i < sizeof(uint16_t); i++) {
     tiny_ring_buffer_remove(&self->ring_buffer, destination);
     destination++;
@@ -94,26 +94,26 @@ bool tiny_queue_enqueue(tiny_queue_t* self, const void* element, uint16_t elemen
   }
 }
 
-void tiny_queue_dequeue(tiny_queue_t* self, void* element, uint16_t* sizeStorage)
+void tiny_queue_dequeue(tiny_queue_t* self, void* element, uint16_t* size_storage)
 {
-  remove_element_size(self, sizeStorage);
-  remove_element(self, element, *sizeStorage);
+  remove_element_size(self, size_storage);
+  remove_element(self, element, *size_storage);
   self->element_count--;
 }
 
 void tiny_queue_discard(tiny_queue_t* self)
 {
-  uint16_t sizeStorage;
-  remove_element_size(self, &sizeStorage);
-  discard_element(self, sizeStorage);
+  uint16_t size_storage;
+  remove_element_size(self, &size_storage);
+  discard_element(self, size_storage);
   self->element_count--;
 }
 
-void tiny_queue_peek(tiny_queue_t* self, void* element, uint16_t* sizeStorage, uint16_t element_index)
+void tiny_queue_peek(tiny_queue_t* self, void* element, uint16_t* size_storage, uint16_t element_index)
 {
   uint16_t i = ring_buffer_index_for_element_index(self, element_index);
-  peek_element_size_at_ring_buffer_index(self, sizeStorage, i);
-  peek_element_at_ring_buffer_index(self, element, *sizeStorage, i + sizeof(uint16_t));
+  peek_element_size_at_ring_buffer_index(self, size_storage, i);
+  peek_element_at_ring_buffer_index(self, element, *size_storage, i + sizeof(uint16_t));
 }
 
 void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size, uint16_t element_index)
@@ -122,10 +122,10 @@ void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size, u
   peek_element_at_ring_buffer_index(self, element, size, i + sizeof(uint16_t));
 }
 
-void tiny_queue_peek_size(tiny_queue_t* self, uint16_t* sizeStorage, uint16_t element_index)
+void tiny_queue_peek_size(tiny_queue_t* self, uint16_t* size_storage, uint16_t element_index)
 {
   uint16_t i = ring_buffer_index_for_element_index(self, element_index);
-  peek_element_size_at_ring_buffer_index(self, sizeStorage, i);
+  peek_element_size_at_ring_buffer_index(self, size_storage, i);
 }
 
 uint16_t tiny_queue_count(tiny_queue_t* self)
@@ -136,8 +136,8 @@ uint16_t tiny_queue_count(tiny_queue_t* self)
 void tiny_queue_init(
   tiny_queue_t* self,
   void* storage,
-  unsigned storageSize)
+  unsigned storage_size)
 {
   self->element_count = 0;
-  tiny_ring_buffer_init(&self->ring_buffer, storage, sizeof(uint8_t), storageSize);
+  tiny_ring_buffer_init(&self->ring_buffer, storage, sizeof(uint8_t), storage_size);
 }
