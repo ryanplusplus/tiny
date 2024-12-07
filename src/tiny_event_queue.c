@@ -69,7 +69,7 @@ static void enqueue_with_data(
   reinterpret(self, _self, tiny_event_queue_t*);
   unsigned capacity = tiny_ring_buffer_capacity(&self->ring_buffer);
   unsigned count = tiny_ring_buffer_count(&self->ring_buffer);
-  unsigned event_size = event_with_data_overhead + data_size;
+  unsigned event_size = (unsigned)(event_with_data_overhead + data_size);
 
   if((capacity - count) <= event_size) {
     self->unable_to_queue_callback();

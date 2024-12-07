@@ -57,7 +57,7 @@ static const i_tiny_key_value_store_api_t api = {
 
 static void initialize_storage(tiny_ram_key_value_store_t* self)
 {
-  tiny_key_value_store_key_t last_key = self->configuration->key_value_pair_count - 1;
+  tiny_key_value_store_key_t last_key = (tiny_key_value_store_key_t)(self->configuration->key_value_pair_count - 1);
   uint16_t last_offset = offset(self, last_key);
   uint8_t last_size = size(&self->interface, last_key);
   memset(self->storage, 0, last_offset + last_size);

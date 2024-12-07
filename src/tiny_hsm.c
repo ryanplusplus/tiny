@@ -49,7 +49,7 @@ static void send_entries(tiny_hsm_t* self, tiny_hsm_state_t after, tiny_hsm_stat
     return;
   }
 
-  for(uint8_t n = distance_between(self, to, after) - 1; n > 0; n--) {
+  for(uint8_t n = (uint8_t)(distance_between(self, to, after) - 1); n > 0; n--) {
     nth_parent(self, to, n)(self, tiny_hsm_signal_entry, NULL);
   }
 
