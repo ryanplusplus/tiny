@@ -132,7 +132,7 @@ static void byte_received(void* context, const void* _args)
 
     switch(self->receive_state) {
       case receive_state_receive_crc_msb:
-        self->receive_crc = args->byte << 8;
+        self->receive_crc = (uint16_t)(args->byte << 8);
         self->receive_state = receive_state_receive_crc_lsb;
         break;
 
