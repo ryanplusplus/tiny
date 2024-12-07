@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: publish
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Publish with PlatformIO
+        env:
+          PLATFORMIO_AUTH_TOKEN: ${{ secrets.PIO_AUTH_TOKEN }}
+        run: pio pkg publish --no-interactive
