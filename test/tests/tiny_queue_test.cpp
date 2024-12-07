@@ -85,8 +85,7 @@ TEST_GROUP(tiny_queue)
 
   void given_that_small_element_has_been_enqueued(uint8_t element)
   {
-    bool wasTheOperationSuccessful = tiny_queue_enqueue(&self, (void*)&element, sizeof(element));
-    CHECK_TRUE(wasTheOperationSuccessful);
+    CHECK_TRUE(tiny_queue_enqueue(&self, (void*)&element, sizeof(element)));
   }
 
   void small_element_shoulde_be_dequeued(uint8_t element)
