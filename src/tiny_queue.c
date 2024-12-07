@@ -64,7 +64,7 @@ static uint16_t ring_buffer_index_for_element_index(tiny_queue_t* self, uint16_t
   uint16_t location = 0;
   for(uint16_t i = 0; i < element_index; i++) {
     peek_element_size_at_ring_buffer_index(self, &element_size, location);
-    location += element_size + sizeof(uint16_t);
+    location += (uint16_t)(element_size + sizeof(uint16_t));
   }
   return location;
 }
@@ -136,7 +136,7 @@ uint16_t tiny_queue_count(tiny_queue_t* self)
 void tiny_queue_init(
   tiny_queue_t* self,
   void* storage,
-  size_t storageSize)
+  unsigned storageSize)
 {
   self->element_count = 0;
   tiny_ring_buffer_init(&self->ring_buffer, storage, sizeof(uint8_t), storageSize);

@@ -21,7 +21,7 @@ typedef struct {
 void tiny_queue_init(
   tiny_queue_t* self,
   void* buffer,
-  size_t buffer_size);
+  unsigned buffer_size);
 
 /*!
  * Add an element to the queue. Returns true if the element was successfully enqueued, false otherwise

@@ -19,8 +19,8 @@ void tiny_timer_group_double_elapse_time(
   tiny_timer_ticks_t ticks)
 {
   while(ticks) {
-    tiny_time_source_ticks_t ticks_to_elapse =
-      std::min(ticks, tiny_timer_ticks_until_next_ready(&self->timer_group));
+    auto ticks_to_elapse =
+      (tiny_time_source_ticks_t)std::min(ticks, tiny_timer_ticks_until_next_ready(&self->timer_group));
 
     tiny_time_source_double_tick(&self->time_source, ticks_to_elapse);
     tiny_timer_group_run(&self->timer_group);

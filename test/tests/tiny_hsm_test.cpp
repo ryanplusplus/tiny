@@ -36,7 +36,7 @@ typedef uint8_t state_t;
 #define state_function(_name)                                                                    \
   static tiny_hsm_result_t _##_name(tiny_hsm_t* hsm, tiny_hsm_signal_t signal, const void* data) \
   {                                                                                              \
-    return mock()                                                                                \
+    return (tiny_hsm_result_t)mock()                                                             \
       .actualCall(#_name)                                                                        \
       .withParameter("hsm", hsm)                                                                 \
       .withParameter("signal", signal)                                                           \

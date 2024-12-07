@@ -8,9 +8,9 @@
 uint16_t tiny_crc16_byte(uint16_t seed, uint8_t byte)
 {
   uint16_t crc = seed;
-  byte = crc >> 8 ^ byte;
+  byte = (uint8_t)(crc >> 8 ^ byte);
   byte ^= byte >> 4;
-  return (crc << 8) ^ ((uint16_t)(byte << 12)) ^ ((uint16_t)(byte << 5)) ^ ((uint16_t)byte);
+  return (uint16_t)((crc << 8) ^ ((uint16_t)(byte << 12)) ^ ((uint16_t)(byte << 5)) ^ ((uint16_t)byte));
 }
 
 uint16_t tiny_crc16_block(uint16_t seed, const uint8_t* bytes, size_t byte_count)

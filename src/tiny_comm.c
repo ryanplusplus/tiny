@@ -71,7 +71,7 @@ static void send_complete(void* context, const void* args)
 
   switch(self->send_state) {
     case send_state_send_crc_msb:
-      if(send_byte(self, self->send_crc >> 8)) {
+      if(send_byte(self, (uint8_t)(self->send_crc >> 8))) {
         self->send_state = send_state_send_crc_lsb;
       }
       break;

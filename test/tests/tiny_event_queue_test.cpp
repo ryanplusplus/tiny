@@ -45,7 +45,7 @@ TEST_GROUP(tiny_event_queue)
     mock().actualCall("unable_to_enqueue");
   }
 
-  void given_that_the_queue_has_been_initialized_with_buffer_size(size_t buffer_size)
+  void given_that_the_queue_has_been_initialized_with_buffer_size(unsigned buffer_size)
   {
     tiny_event_queue_init(&self, buffer, buffer_size, unable_to_enqueue);
   }

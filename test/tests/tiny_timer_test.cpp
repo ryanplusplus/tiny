@@ -151,7 +151,7 @@ TEST_GROUP(tiny_timer)
     mock().enable();
   }
 
-  void should_invoke_timer_callback_after(tiny_timer_t * timer, tiny_timer_ticks_t ticks)
+  void should_invoke_timer_callback_after(tiny_timer_t * timer, tiny_time_source_ticks_t ticks)
   {
     after_time_passes_and_the_group_is_run(ticks - 1);
     should_invoke_timer_callback(timer);

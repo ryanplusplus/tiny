@@ -3,6 +3,7 @@
  * @brief
  */
 
+#include <limits>
 extern "C" {
 #include <string.h>
 #include "tiny_queue.h"
@@ -136,7 +137,7 @@ TEST_GROUP(tiny_queue)
 
   void peeking_should_yield(uint8_t * element, size_t element_size, uint16_t element_index)
   {
-    uint8_t peekedElementStorage[element_size];
+    uint8_t peekedElementStorage[std::numeric_limits<uint8_t>::max()];
     memset(peekedElementStorage, 0, sizeof(peekedElementStorage));
     uint16_t dequeued_element_size = 0;
 
@@ -187,7 +188,7 @@ TEST_GROUP(tiny_queue)
     }
   }
 
-  void given_that_n_elements_have_been_enqueued(uint16_t element_count)
+  void given_that_n_elements_have_been_enqueued(uint8_t element_count)
   {
     enqueue_one_byte_elements_such_that_each_element_is_incremented(0, element_count);
   }
