@@ -323,8 +323,8 @@ TEST(tiny_queue, should_be_able_to_peek_just_part_of_an_element)
   should_be_able_to_peek_bytes_of(0, 10, 0);
   should_be_able_to_peek_bytes_of(0, 15, 0);
   should_be_able_to_peek_bytes_of(0, 1, 3);
-  // should_be_able_to_peek_bytes_of(0, 10, 4);
-  // should_be_able_to_peek_bytes_of(0, 15, 5); // fixme
+  should_be_able_to_peek_bytes_of(0, 10, 4);
+  should_be_able_to_peek_bytes_of(0, 15, 5);
   should_be_able_to_peek_bytes_of(0, large_element_size, 0);
 }
 
