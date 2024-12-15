@@ -13,7 +13,7 @@
       "maintainer": true
     }
   ],
-  "version": "6.4.7",
+  "version": "7.0.0",
   "frameworks": "*",
   "platforms": "*",
   "export": {

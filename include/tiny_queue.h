@@ -50,7 +50,7 @@ void tiny_queue_peek(tiny_queue_t* self, void* element, uint16_t* size, uint16_t
  * Peek part of an element. Only copies out up to the specified number of bytes.
  * @pre 0 <= index < The count of elements in the queue
  */
-void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size_limit, uint16_t index);
+void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size, uint16_t offset, uint16_t element_index);
 
 /*!
  * Peek part of an element. Only copies out up to the specified number of bytes.

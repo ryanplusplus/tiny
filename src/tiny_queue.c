@@ -116,10 +116,10 @@ void tiny_queue_peek(tiny_queue_t* self, void* element, uint16_t* size_storage, 
   peek_element_at_ring_buffer_index(self, element, *size_storage, i + sizeof(uint16_t));
 }
 
-void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size, uint16_t element_index)
+void tiny_queue_peek_partial(tiny_queue_t* self, void* element, uint16_t size, uint16_t offset, uint16_t element_index)
 {
   uint16_t i = ring_buffer_index_for_element_index(self, element_index);
-  peek_element_at_ring_buffer_index(self, element, size, i + sizeof(uint16_t));
+  peek_element_at_ring_buffer_index(self, element, size, (uint16_t)(i + offset + sizeof(uint16_t)));
 }
 
 void tiny_queue_peek_size(tiny_queue_t* self, uint16_t* size_storage, uint16_t element_index)
