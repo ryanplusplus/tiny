@@ -98,7 +98,7 @@ TEST_GROUP(tiny_queue)
     CHECK_EQUAL(element, dequeued_element_storage);
   }
 
-  bool given_that_large_element_has_been_enqueued(uint8_t * element)
+  bool given_that_large_element_has_been_enqueued(uint8_t* element)
   {
     return tiny_queue_enqueue(&self, (void*)element, large_element_size);
   }
@@ -115,7 +115,7 @@ TEST_GROUP(tiny_queue)
     CHECK_FALSE(given_that_large_element_has_been_enqueued(some_large_element_1));
   }
 
-  void dequeueing_should_yield(uint8_t * element)
+  void dequeueing_should_yield(uint8_t* element)
   {
     uint8_t dequeued_element_storage[large_element_size];
     memset(dequeued_element_storage, 0, sizeof(dequeued_element_storage));
@@ -134,7 +134,7 @@ TEST_GROUP(tiny_queue)
     tiny_queue_discard(&self);
   }
 
-  void peeking_should_yield(uint8_t * element, size_t element_size, uint16_t element_index)
+  void peeking_should_yield(uint8_t* element, size_t element_size, uint16_t element_index)
   {
     uint8_t peekedElementStorage[std::numeric_limits<uint8_t>::max()];
     memset(peekedElementStorage, 0, sizeof(peekedElementStorage));
@@ -148,7 +148,7 @@ TEST_GROUP(tiny_queue)
     }
   }
 
-  void peeking_from_the_front_of_the_queue_should_yield(uint8_t * element)
+  void peeking_from_the_front_of_the_queue_should_yield(uint8_t* element)
   {
     peeking_should_yield(element, large_element_size, 0);
   }
@@ -225,6 +225,41 @@ TEST_GROUP(tiny_queue)
   void the_element_count_should_be(uint8_t expected)
   {
     CHECK_EQUAL(expected, tiny_queue_count(&self));
+  }
+
+  void given_that_the_queue_has_been_initialized_with_storage_size(uint16_t size)
+  {
+    CHECK(size <= sizeof(buffer));
+
+    tiny_queue_init(
+      &self,
+      buffer,
+      size);
+  }
+
+  template <typename T>
+  void given_that_an_element_has_been_enqueued(T element)
+  {
+    CHECK(tiny_queue_enqueue(&self, &element, sizeof(element)));
+  }
+
+  void should_be_able_to_iterate_over_element_bytes(uint16_t index)
+  {
+    uint8_t expected[UINT8_MAX];
+    uint16_t size;
+    tiny_queue_peek(&self, expected, &size, index);
+
+    tiny_queue_raw_element_iterator_t iterator = tiny_queue_raw_element_iterator(&self, index);
+    for(uint16_t i = 0; i < size; i++) {
+      uint8_t byte = tiny_queue_raw_element_iterator_peek(&iterator);
+      tiny_queue_raw_element_iterator_advance(&iterator);
+      CHECK_EQUAL(expected[i], byte);
+    }
+  }
+
+  void given_that_an_element_has_been_discarded()
+  {
+    tiny_queue_discard(&self);
   }
 };
 
@@ -370,4 +405,24 @@ TEST(tiny_queue, should_know_how_many_elements_are_queued_after_some_have_been_d
   given_that_n_elements_have_been_enqueued(4);
   given_that_n_elements_have_been_discarded(2);
   the_element_count_should_be(2);
+}
+
+TEST(tiny_queue, should_allow_the_bytes_of_an_element_to_be_iterated_over)
+{
+  given_that_the_queue_has_been_initialized();
+  given_that_an_element_has_been_enqueued((uint32_t)0x12345678);
+  given_that_an_element_has_been_enqueued((uint16_t)0xABCD);
+  should_be_able_to_iterate_over_element_bytes(0);
+  should_be_able_to_iterate_over_element_bytes(1);
+}
+
+TEST(tiny_queue, should_allow_the_bytes_of_an_element_to_be_iterated_over_even_if_the_element_wraps)
+{
+  given_that_the_queue_has_been_initialized_with_storage_size(12);
+  given_that_an_element_has_been_enqueued((uint16_t)0xABCD);
+  given_that_an_element_has_been_enqueued((uint32_t)0x12345678);
+  given_that_an_element_has_been_discarded();
+  given_that_an_element_has_been_enqueued((uint32_t)0x87654321);
+
+  should_be_able_to_iterate_over_element_bytes(1);
 }

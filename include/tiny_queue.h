@@ -15,6 +15,13 @@ typedef struct {
   tiny_ring_buffer_t ring_buffer;
 } tiny_queue_t;
 
+typedef struct
+{
+  unsigned offset;
+  const uint8_t* buffer;
+  unsigned buffer_capacity;
+} tiny_queue_raw_element_iterator_t;
+
 /*!
  * Initialize a queue with the provided buffer.
  */
@@ -62,5 +69,35 @@ void tiny_queue_peek_size(tiny_queue_t* self, uint16_t* size, uint16_t index);
  * Get the number of elements in the queue.
  */
 uint16_t tiny_queue_count(tiny_queue_t* self);
+
+/*!
+ * Get an iterator over the raw bytes of an element. This allows for optimized access to
+ * an element that cannot be read out of the queue in its entirety.
+ */
+tiny_queue_raw_element_iterator_t tiny_queue_raw_element_iterator(
+  tiny_queue_t* instance,
+  uint16_t index);
+
+/*!
+ * View the next byte in the element without advancing the iterator.
+ */
+static inline uint8_t tiny_queue_raw_element_iterator_peek(
+  tiny_queue_raw_element_iterator_t* instance)
+{
+  return instance->buffer[instance->offset];
+}
+
+/*!
+ * @warning This does no bounds checking. The client must ensure that the iterator is not
+ *    advanced past the end of the buffer.
+ */
+static inline void tiny_queue_raw_element_iterator_advance(
+  tiny_queue_raw_element_iterator_t* instance)
+{
+  instance->offset++;
+  if(instance->offset >= instance->buffer_capacity) {
+    instance->offset = 0;
+  }
+}
 
 #endif
