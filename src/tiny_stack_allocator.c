@@ -4,6 +4,7 @@
  */
 
 #include <stddef.h>
+#include <stdalign.h>
 #include <stdint.h>
 #include "tiny_stack_allocator.h"
 #include "tiny_utils.h"
