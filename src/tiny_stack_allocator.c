@@ -4,18 +4,35 @@
  */
 
 #include <stddef.h>
-#include <stdalign.h>
 #include <stdint.h>
 #include "tiny_stack_allocator.h"
 #include "tiny_utils.h"
 
-#define max(a, b) ((a) > (b) ? a : b)
+typedef struct {
+  uint8_t data;
+  union {
+    int _int;
+    long long _long_long;
+    float _float;
+    double _double;
+    long double _long_double;
+    void* _pointer;
+  } alignment;
+} alignment_t;
+
+enum {
+  alignment = offsetof(alignment_t, alignment),
+};
 
 #define define_worker(_size)                                                          \
   static void worker_##_size(tiny_stack_allocator_callback_t callback, void* context) \
   {                                                                                   \
-    max_align_t data[max(_size, sizeof(max_align_t)) / sizeof(max_align_t)];          \
-    callback(context, data);                                                          \
+    uint8_t data[_size + alignment - 1];                                              \
+    uintptr_t offset = alignment - ((uintptr_t)data % alignment);                     \
+    if(offset == alignment) {                                                         \
+      offset = 0;                                                                     \
+    }                                                                                 \
+    callback(context, &data[offset]);                                                 \
   }                                                                                   \
   typedef int dummy##_size
 
