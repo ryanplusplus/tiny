@@ -90,6 +90,7 @@ void tiny_ring_buffer_remove(tiny_ring_buffer_t* self, void* element)
     memcpy(element, source, self->element_size);
 
     self->tail = increment_with_wrap(initial_tail, self->capacity);
+    self->full = false;
   }
 }
 
