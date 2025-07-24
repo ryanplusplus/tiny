@@ -5,7 +5,6 @@
 
 #include <algorithm>
 #include "double/tiny_timer_group_double.hpp"
-#include "tiny_utils.h"
 
 void tiny_timer_group_double_init(
   tiny_timer_group_double_t* self)
@@ -23,7 +22,8 @@ void tiny_timer_group_double_elapse_time(
       (tiny_time_source_ticks_t)std::min(ticks, tiny_timer_ticks_until_next_ready(&self->timer_group));
 
     tiny_time_source_double_tick(&self->time_source, ticks_to_elapse);
-    tiny_timer_group_run(&self->timer_group);
+    while(!tiny_timer_group_run(&self->timer_group)) {
+    }
 
     ticks -= ticks_to_elapse;
   }
