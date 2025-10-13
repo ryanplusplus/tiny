@@ -9,7 +9,7 @@
 #include <stddef.h>
 
 enum {
-  tiny_stack_allocator_largest_supported_size = 256
+  tiny_stack_allocator_largest_supported_size = 4096
 };
 
 typedef void (*tiny_stack_allocator_callback_t)(void* context, void* data);

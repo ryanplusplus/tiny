@@ -42,6 +42,10 @@ define_worker(32);
 define_worker(64);
 define_worker(128);
 define_worker(256);
+define_worker(512);
+define_worker(1024);
+define_worker(2048);
+define_worker(4096);
 
 typedef struct {
   size_t size;
@@ -55,6 +59,10 @@ static const worker_t workers[] = {
   { 64, worker_64 },
   { 128, worker_128 },
   { 256, worker_256 },
+  { 512, worker_512 },
+  { 1024, worker_1024 },
+  { 2048, worker_2048 },
+  { 4096, worker_4096 },
 };
 
 void tiny_stack_allocator_allocate_aligned(
